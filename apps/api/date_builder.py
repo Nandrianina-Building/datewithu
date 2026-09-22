@@ -43,6 +43,11 @@ from apps.planner.models import (
 
 from . import serializers
 
+
+def _is_future_date(value):
+    """Return whether a Date Builder date is after the server's local date."""
+    return value > timezone.localdate()
+
 #: Nombre d'éléments affichés initialement pour une étape à choix
 #: multiples avant recherche/pagination AJAX via /api/cities/ ou
 #: /api/places/ (voir static/js/date-builder.js).
@@ -238,7 +243,7 @@ class DateBuilderStepView(APIView):
             if "date" in data:
                 try:
                     date_value = datetime.strptime(data["date"], "%Y-%m-%d").date()
-                    if date_value <= timezone.localdate():
+                    if not _is_future_date(date_value):
                         errors["date"] = "La date du rendez-vous doit être dans le futur."
                     else:
                         plan.date_value = date_value
@@ -336,7 +341,7 @@ class DateBuilderCompleteView(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        if plan.date_value <= timezone.localdate():
+        if not _is_future_date(plan.date_value):
             return Response(
                 {"detail": "La date du rendez-vous doit être dans le futur."},
                 status=status.HTTP_400_BAD_REQUEST,

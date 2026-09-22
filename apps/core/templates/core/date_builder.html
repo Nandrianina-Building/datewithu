@@ -10,7 +10,7 @@
 </div>
 
 <div class="db-step-shell">
-    <div id="date-builder" data-start-url="{% url 'core:home' %}">
+    <div id="date-builder" data-start-url="{% url 'core:home' %}" data-today="{{ date_builder_today }}">
         {% csrf_token %}
         <div id="db-progress" class="db-progress"></div>
         <div id="db-step" class="db-step">Chargement...</div>
@@ -27,5 +27,5 @@
     window.DATE_BUILDER_API = "/api/date-builder/";
 </script>
 <script src="{% static 'js/invite-share.js' %}"></script>
-<script src="{% static 'js/date-builder.js' %}?v=4"></script>
+<script src="{% static 'js/date-builder.js' %}?v=5"></script>
 {% endblock %}

@@ -8,6 +8,7 @@
     "use strict";
 
     const API = window.DATE_BUILDER_API;
+    const builderEl = document.getElementById("date-builder");
     const progressEl = document.getElementById("db-progress");
     const stepEl = document.getElementById("db-step");
     const errorEl = document.getElementById("db-error");
@@ -276,13 +277,15 @@
     function renderSchedule(list) {
         const dateInput = document.createElement("input");
         dateInput.type = "date";
-        const tomorrow = new Date();
+        dateInput.required = true;
+        const tomorrow = new Date(`${builderEl.dataset.today}T00:00:00`);
         tomorrow.setDate(tomorrow.getDate() + 1);
         const month = String(tomorrow.getMonth() + 1).padStart(2, "0");
         const day = String(tomorrow.getDate()).padStart(2, "0");
         dateInput.min = `${tomorrow.getFullYear()}-${month}-${day}`;
         const timeInput = document.createElement("input");
         timeInput.type = "time";
+        timeInput.required = true;
         const submit = choiceButton("Valider", () => {
             if (!dateInput.value || dateInput.value < dateInput.min) {
                 dateInput.reportValidity();

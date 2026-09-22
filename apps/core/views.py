@@ -113,7 +113,11 @@ def date_builder_view(request):
     endpoints /api/date-builder/... en AJAX — cette vue ne fait que
     servir le template.
     """
-    return render(request, "core/date_builder.html")
+    return render(
+        request,
+        "core/date_builder.html",
+        {"date_builder_today": timezone.localdate().isoformat()},
+    )
 
 
 @login_required
