@@ -278,10 +278,16 @@
         dateInput.type = "date";
         const tomorrow = new Date();
         tomorrow.setDate(tomorrow.getDate() + 1);
-        dateInput.min = tomorrow.toISOString().slice(0, 10);
+        const month = String(tomorrow.getMonth() + 1).padStart(2, "0");
+        const day = String(tomorrow.getDate()).padStart(2, "0");
+        dateInput.min = `${tomorrow.getFullYear()}-${month}-${day}`;
         const timeInput = document.createElement("input");
         timeInput.type = "time";
         const submit = choiceButton("Valider", () => {
+            if (!dateInput.value || dateInput.value < dateInput.min) {
+                dateInput.reportValidity();
+                return;
+            }
             submitStep({ date: dateInput.value, time: timeInput.value });
         });
         list.appendChild(dateInput);
