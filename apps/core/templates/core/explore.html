@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Explorer — Date With U{% endblock %}
+
+{% block content %}
+<div class="page-hero" style="--hero-image:url('https://picsum.photos/seed/dwu-explore/1600/500');">
+    <h1>Explorer les lieux</h1>
+    <p>Restaurants, activités, ambiances — trouve l'endroit parfait pour ton prochain rendez-vous.</p>
+</div>
+<div class="map-toolbar">
+    <input type="search" id="explore-search" value="{{ request.GET.search|default:''|escape }}" placeholder="Rechercher un lieu...">
+    <select id="explore-filter-city"><option value="">Toutes les villes</option></select>
+    <select id="explore-filter-category"><option value="">Toutes les catégories</option></select>
+</div>
+{% csrf_token %}
+<div id="explore-app" class="places-grid" data-authenticated="{{ user.is_authenticated|yesno:'true,false' }}" data-csrf-token="{{ csrf_token }}">
+    <p><em>Chargement...</em></p>
+</div>
+<div id="explore-pagination" class="explore-pagination"></div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/place-detail.js' %}"></script>
+<script src="{% static 'js/explore.js' %}?v=4"></script>
+{% endblock %}

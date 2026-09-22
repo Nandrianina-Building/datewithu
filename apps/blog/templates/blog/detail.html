@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load static icons %}
+
+{% block title %}{{ article.title }} — Date With U{% endblock %}
+{% block meta_description %}{{ article.excerpt }}{% endblock %}
+{% block og_type %}article{% endblock %}
+{% block og_title %}{{ article.title }}{% endblock %}
+{% block og_description %}{{ article.excerpt }}{% endblock %}
+{% block og_image %}{% if article.cover_image %}{{ request.scheme }}://{{ request.get_host }}{{ article.cover_image.url }}{% else %}{{ block.super }}{% endif %}{% endblock %}
+
+{% block content %}
+<article class="blog-article">
+    {% if article.cover_image %}
+        <img src="{{ article.cover_image.url }}" alt="{{ article.title }}" class="blog-article-cover">
+    {% endif %}
+    {% if article.city %}<span class="place-chip">{{ article.city.name }}</span>{% endif %}
+    <h1>{{ article.title }}</h1>
+    <p class="legal-updated">{{ article.published_at|date:"d F Y" }}</p>
+    <div class="blog-article-content">{{ content_html }}</div>
+    <p><a href="{% url 'blog:list' %}">← Retour au magazine</a></p>
+</article>
+{% endblock %}

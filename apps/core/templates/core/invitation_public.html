@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load static icons %}
+
+{% block title %}{{ og_title }}{% endblock %}
+
+{# Réutilise les blocs Open Graph par défaut de base.html plutôt que de #}
+{# dupliquer les balises meta (deux og:title/og:image casseraient l'aperçu). #}
+{% block og_title %}{{ og_title }}{% endblock %}
+{% block og_description %}{{ og_description }}{% endblock %}
+{% block og_image %}{% if og_image %}{{ og_image }}{% else %}{{ block.super }}{% endif %}{% endblock %}
+
+{% block content %}
+{% if requires_account %}
+    <div style="max-width:460px;margin:2.5rem auto;text-align:center;" class="card">
+        <div class="verify-icon">{% icon "heart" "icon-xl" %}</div>
+        <h1>{{ og_title }}</h1>
+        <p>{{ og_description }}</p>
+        <p style="font-size:0.9rem;">Pour voir les détails et répondre, crée d'abord un compte Date With U (ça prend une minute) ou connecte-toi si tu en as déjà un.</p>
+        <div class="hero-actions" style="justify-content:center;">
+            <a class="btn btn-primary" href="{{ register_url }}">{% icon "heart" %} Créer un compte</a>
+            <a class="btn" href="{{ login_url }}">J'ai déjà un compte</a>
+        </div>
+    </div>
+{% else %}
+    <div id="invitation-app" data-token="{{ token }}" data-csrf-token="{{ csrf_token }}">
+        {% csrf_token %}
+        <p>Chargement de l'invitation...</p>
+    </div>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+{% if not requires_account %}
+<script src="{% static 'js/invitation.js' %}?v=2"></script>
+{% endif %}
+{% endblock %}

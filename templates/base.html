@@ -1,0 +1,289 @@
+{% load static icons %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>{% block title %}Date With U — Le rendez-vous parfait à Madagascar{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}Construisez et partagez le rendez-vous idéal : lieux, ambiances et budgets sélectionnés partout à Madagascar.{% endblock %}">
+
+    {% comment %}
+    Open Graph / Twitter Card par défaut, valables sur toutes les pages.
+    Une page peut personnaliser og_title/og_description/og_image (ex :
+    invitation_public.html) : Django réutilise l'override du bloc partout
+    où il apparaît, même employé plusieurs fois dans ce template.
+    {% endcomment %}
+    <meta property="og:type" content="{% block og_type %}website{% endblock %}">
+    <meta property="og:site_name" content="Date With U">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    <meta property="og:title" content="{% block og_title %}Date With U — Le rendez-vous parfait à Madagascar{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Construisez et partagez le rendez-vous idéal : lieux, ambiances et budgets sélectionnés partout à Madagascar.{% endblock %}">
+    <meta property="og:image" content="{% block og_image %}{{ request.scheme }}://{{ request.get_host }}{% static 'icons/icon-512.png' %}{% endblock %}">
+    {# Twitter retombe automatiquement sur og:title/og:description/og:image #}
+    {# quand les balises twitter:* équivalentes sont absentes — pas besoin  #}
+    {# de dupliquer les blocs (interdit : un {% block %} ne peut apparaître #}
+    {# qu'une seule fois par template).                                    #}
+    <meta name="twitter:card" content="summary_large_image">
+
+    <script>
+        // Applique le thème choisi AVANT le premier rendu, pour éviter un
+        // flash de thème par défaut (sombre) puis clair au chargement si
+        // l'utilisateur a explicitement choisi le clair (voir dark-mode.js).
+        (function () {
+            var saved = localStorage.getItem("dwu-theme");
+            if (saved) document.documentElement.setAttribute("data-theme", saved);
+        })();
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="manifest" href="{% static 'manifest.json' %}">
+
+    <link rel="icon" href="{% static 'icons/favicon.ico' %}" sizes="any">
+    <link rel="icon" href="{% static 'icons/icon.svg' %}" type="image/svg+xml">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'icons/favicon-32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'icons/favicon-16.png' %}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'icons/apple-touch-icon.png' %}">
+    <meta name="theme-color" content="#0e0b13">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    {% if plausible_domain %}
+        {# Analytics sans cookie ni donnée personnelle : aucune bannière de consentement requise. #}
+        <script defer data-domain="{{ plausible_domain }}" src="{{ plausible_script_url }}"></script>
+    {% endif %}
+    {% comment %}
+    Source fiable du jeton CSRF pour tous les appels fetch() en AJAX :
+    le cookie "csrftoken" est en HttpOnly (illisible en JS, par sécurité),
+    donc chaque script qui lisait `document.cookie` pour le CSRF échouait
+    silencieusement — DRF renvoyait 403, que le JS interprétait à tort
+    comme "non connecté" (ex : "Connecte-toi pour publier un avis" même
+    en étant connecté). Cette balise <meta>, elle, est toujours présente
+    et lisible : voir static/js/csrf.js.
+    {% endcomment %}
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <script src="{% static 'js/csrf.js' %}"></script>
+    <script src="{% static 'js/icons.js' %}"></script>
+    <script src="{% static 'js/dwu-modal.js' %}?v=3"></script>
+    <script src="{% static 'js/swipe-hints.js' %}?v=3" defer></script>
+    <script src="{% static 'js/dark-mode.js' %}" defer></script>
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="{% block body_class %}{% endblock %}">
+<div class="app-shell">
+    {% if user.is_authenticated %}
+    <aside class="sidebar" id="sidebar">
+        <a href="{% url 'core:home' %}" class="sidebar-logo">{% icon "heart" %} <span>Date With U</span></a>
+
+        <nav class="sidebar-nav">
+            <a href="{% url 'core:dashboard' %}" class="sidebar-link">{% icon "compass" %} <span>Accueil</span></a>
+            <a href="{% url 'core:explore' %}" class="sidebar-link">{% icon "map-pin" %} <span>Découvrir</span></a>
+            <a href="{% url 'core:date_builder' %}" class="sidebar-link">{% icon "sparkles" %} <span>Créer un rendez-vous</span></a>
+            <a href="{% url 'feed:feed' %}" class="sidebar-link">{% icon "sparkles" %} <span>Le Fil</span></a>
+            <a href="{% url 'core:my_dates' %}" class="sidebar-link">{% icon "heart" %} <span>Mes rendez-vous</span></a>
+            <a href="{% url 'messages:inbox' %}" class="sidebar-link">{% icon "mail" %} <span>Messages</span><span class="notif-badge js-messages-badge" style="display:none;"></span></a>
+            <a href="{% url 'core:notifications' %}" class="sidebar-link">{% icon "bell" %} <span>Notifications</span><span class="notif-badge js-notif-badge" style="display:none;"></span></a>
+            <a href="{% url 'core:packages' %}" class="sidebar-link">{% icon "gift" %} <span>Packages</span></a>
+            <a href="{% url 'core:map' %}" class="sidebar-link">{% icon "map" %} <span>Carte</span></a>
+            <a href="{% url 'blog:list' %}" class="sidebar-link">{% icon "sparkles" %} <span>Magazine</span></a>
+            {% if user.is_staff %}
+                <a href="{% url 'core:admin_dashboard' %}" class="sidebar-link">{% icon "shield" %} <span>Dashboard admin</span></a>
+            {% endif %}
+        </nav>
+
+        <div class="sidebar-footer">
+            <a href="{% url 'accounts:profile' %}" class="sidebar-link sidebar-profile">
+                {% if user.avatar %}
+                    <img src="{{ user.avatar.url }}" alt="" class="avatar" style="width:26px;height:26px;">
+                {% else %}
+                    {% icon "user" %}
+                {% endif %}
+                <span>{{ user.first_name|default:user.username }}</span>
+            </a>
+            <form action="{% url 'accounts:logout' %}" method="post" class="sidebar-logout-form">
+                {% csrf_token %}
+                <button type="submit" class="sidebar-link">{% icon "logout" %} <span>Déconnexion</span></button>
+            </form>
+        </div>
+    </aside>
+    {% endif %}
+
+    <div class="main-column">
+        <header class="topbar">
+            {% if user.is_authenticated %}
+                <a href="{% url 'core:dashboard' %}" class="logo mobile-only-logo">{% icon "heart" %}</a>
+                <form action="{% url 'core:explore' %}" method="get" class="topbar-search">
+                    {% icon "search" %}
+                    <input type="search" name="search" placeholder="Rechercher un lieu, une activité, une ville...">
+                </form>
+                <div class="topbar-actions">
+                    <button type="button" id="theme-toggle-btn" aria-label="Changer de thème" title="Mode sombre / clair">
+                        <span id="theme-toggle-icon">{% icon "moon" %}</span>
+                    </button>
+                    <a href="{% url 'core:notifications' %}" class="topbar-icon-btn" title="Notifications">
+                        {% icon "bell" %}<span class="notif-badge js-notif-badge" style="display:none;"></span>
+                    </a>
+                    <a href="{% url 'core:my_dates' %}" class="topbar-icon-btn" title="Mes rendez-vous">{% icon "heart" %}</a>
+                    <a href="{% url 'accounts:profile' %}" class="topbar-avatar" title="Mon profil">
+                        {% if user.avatar %}
+                            <img src="{{ user.avatar.url }}" alt="">
+                        {% else %}
+                            {{ user.username|slice:":1"|upper }}
+                        {% endif %}
+                    </a>
+                </div>
+            {% else %}
+                <button type="button" class="nav-toggle" id="nav-toggle" aria-label="Ouvrir le menu" aria-expanded="false">
+                    {% icon "menu" "icon-lg" %}
+                </button>
+                <button type="button" id="theme-toggle-btn" aria-label="Changer de thème" title="Mode sombre / clair">
+                    <span id="theme-toggle-icon">{% icon "moon" %}</span>
+                </button>
+                <a href="{% url 'core:home' %}" class="logo">{% icon "heart" %} Date With U</a>
+                <nav id="site-nav" class="anon-nav">
+                    <a href="{% url 'accounts:login' %}">Connexion</a>
+                    <a href="{% url 'accounts:register' %}" class="btn btn-primary">Inscription</a>
+                </nav>
+            {% endif %}
+        </header>
+
+        {% block full_content %}
+        <main class="container">
+            {% if user.is_authenticated and not user.is_verified %}
+                <div class="messages">
+                    <li class="message warning" style="display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;">
+                        <span>{% icon "mail" %} Confirme ton adresse e-mail pour créer et partager des rendez-vous.</span>
+                        <form action="{% url 'accounts:resend_verification' %}" method="post" class="inline-form">
+                            {% csrf_token %}
+                            <button type="submit" class="link-btn">Renvoyer l'e-mail</button>
+                        </form>
+                    </li>
+                </div>
+            {% endif %}
+
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li class="message {{ message.tags }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            {% block content %}{% endblock %}
+        </main>
+        {% endblock %}
+
+        {% block footer %}
+        <footer class="site-footer">
+            <div class="footer-grid">
+                <div>
+                    <a href="{% url 'core:home' %}" class="logo" style="color:#fff;margin-bottom:0.8rem;display:flex;">Date With U</a>
+                    <p style="color:rgba(255,255,255,0.65);max-width:280px;">
+                        La plateforme malgache pour construire, partager et vivre le rendez-vous parfait.
+                    </p>
+                </div>
+                <div>
+                    <h4>Découvrir</h4>
+                    <a href="{% url 'core:explore' %}">Explorer les lieux</a>
+                    <a href="{% url 'core:packages' %}">Packages</a>
+                    <a href="{% url 'core:map' %}">Carte interactive</a>
+                    <a href="{% url 'blog:list' %}">Magazine</a>
+                </div>
+                <div>
+                    <h4>Compte</h4>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'accounts:profile' %}">Mon profil</a>
+                        <a href="{% url 'core:dashboard' %}">Mon espace</a>
+                    {% else %}
+                        <a href="{% url 'accounts:login' %}">Connexion</a>
+                        <a href="{% url 'accounts:register' %}">Inscription</a>
+                    {% endif %}
+                </div>
+                <div>
+                    <h4>Suivez-nous</h4>
+                    <a href="#">{% icon "instagram" %} Instagram</a>
+                    <a href="#">{% icon "facebook" %} Facebook</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>&copy; {% now "Y" %} Date With U — Madagascar</span>
+                <span class="footer-legal-links">
+                    <a href="{% url 'core:terms' %}">CGU</a>
+                    <a href="{% url 'core:privacy' %}">Confidentialité</a>
+                </span>
+                <span>Fait avec {% icon "heart" "icon" %} à Antananarivo</span>
+            </div>
+        </footer>
+        {% endblock %}
+    </div>
+</div>
+
+{% if user.is_authenticated %}
+<nav class="mobile-tabbar">
+    <a href="{% url 'core:dashboard' %}">{% icon "compass" %}<span>Accueil</span></a>
+    <a href="{% url 'core:explore' %}">{% icon "map-pin" %}<span>Découvrir</span></a>
+    <a href="{% url 'feed:feed' %}">{% icon "sparkles" %}<span>Fil</span></a>
+    <a href="{% url 'messages:inbox' %}">{% icon "mail" %}<span>Messages</span></a>
+    <a href="{% url 'accounts:profile' %}">{% icon "user" %}<span>Profil</span></a>
+</nav>
+{% endif %}
+
+{% block extra_js %}{% endblock %}
+
+<script>
+    (function () {
+        var messages = document.querySelectorAll(".messages .message");
+        if (!messages.length || !window.DWU || !window.DWU.infoModal) return;
+        var message = messages[0];
+        var text = message.textContent.replace(/\s+/g, " ").trim();
+        var tone = message.classList.contains("error") ? "danger" : "";
+        var title = message.classList.contains("error") ? "Une erreur est survenue" :
+            (message.classList.contains("warning") ? "Attention" : "C'est fait");
+        messages.forEach(function (item) { item.closest(".messages").classList.add("dwu-messages-hidden"); });
+        window.DWU.infoModal(text, { title: title, tone: tone, icon: tone ? "alert-circle" : "check-circle" });
+    })();
+</script>
+
+{% if user.is_authenticated %}
+<script src="{% static 'js/notifications-badge.js' %}"></script>
+<script src="{% static 'js/messages-badge.js' %}"></script>
+{% endif %}
+
+<script>
+    (function () {
+        var toggle = document.getElementById("nav-toggle");
+        var nav = document.getElementById("site-nav");
+        if (toggle && nav) {
+            toggle.addEventListener("click", function () {
+                var isOpen = nav.classList.toggle("open");
+                toggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+            });
+        }
+    })();
+
+    (function () {
+        // Met en surbrillance le lien de la sidebar / barre d'onglets mobile
+        // correspondant à la page actuelle (comparaison faite en JS, pas en
+        // CSS, puisque main.css est un fichier statique sans accès au
+        // contexte de la requête).
+        var path = window.location.pathname;
+        document.querySelectorAll(".sidebar-link, .mobile-tabbar a").forEach(function (link) {
+            var href = link.getAttribute("href");
+            if (href && href !== "/" && (path === href || path.indexOf(href) === 0)) {
+                link.classList.add("active");
+            }
+        });
+    })();
+
+    if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+            navigator.serviceWorker.register("/sw.js").catch(() => {
+                // PWA optionnelle : un échec d'enregistrement ne doit
+                // jamais bloquer le reste du site.
+            });
+        });
+    }
+</script>
+</body>
+</html>

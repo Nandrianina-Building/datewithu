@@ -1,0 +1,10 @@
+Bonjour {{ user.first_name|default:user.username }},
+
+Merci de t'être inscrit·e sur Date With U !
+
+Confirme ton adresse e-mail en ouvrant ce lien (valable 24h) :
+{{ verify_url }}
+
+Si tu n'es pas à l'origine de cette inscription, ignore simplement ce message.
+
+— L'équipe Date With U

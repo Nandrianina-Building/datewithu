@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load static icons %}
+
+{% block title %}Tous mes rendez-vous — Date With U{% endblock %}
+
+{% block content %}
+<div class="mydates-header">
+    <div>
+        <h1>{% icon "heart" %} Tous mes rendez-vous</h1>
+        <p>Tout ce que tu as proposé, et toutes les invitations que tu as reçues — au même endroit.</p>
+    </div>
+    <a href="{% url 'core:date_builder' %}" class="btn btn-primary">{% icon "sparkles" %} Nouveau rendez-vous</a>
+</div>
+
+<div class="mydates-tabs" role="tablist">
+    <button type="button" class="mydates-tab active" data-tab="proposed" role="tab" aria-selected="true">
+        {% icon "send" %} Mes propositions <span class="mydates-tab-count" id="count-proposed"></span>
+    </button>
+    <button type="button" class="mydates-tab" data-tab="received" role="tab" aria-selected="false">
+        {% icon "mail" %} Invitations reçues <span class="mydates-tab-count" id="count-received"></span>
+    </button>
+</div>
+
+<div id="panel-proposed" class="mydates-panel">
+    <div class="mydates-grid" id="proposed-grid"><p><em>Chargement...</em></p></div>
+</div>
+<div id="panel-received" class="mydates-panel" style="display:none;">
+    <div class="mydates-grid" id="received-grid"><p><em>Chargement...</em></p></div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/invite-share.js' %}"></script>
+<script src="{% static 'js/my-dates-page.js' %}"></script>
+{% endblock %}

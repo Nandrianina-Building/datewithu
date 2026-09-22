@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% load icons %}
+
+{% block title %}Mes statistiques — Date With U{% endblock %}
+
+{% block content %}
+<div class="page-hero" style="--hero-image:url('https://picsum.photos/seed/dwu-stats/1600/500');">
+    <h1>{% icon "sparkles" %} Ton année en rendez-vous</h1>
+    <p>Un aperçu de ton activité sur Date With U.</p>
+</div>
+
+<div class="stats-kpi-grid">
+    <div class="card stats-kpi">
+        <span class="stats-kpi-value">{{ total }}</span>
+        <span class="stats-kpi-label">Rendez-vous créés</span>
+    </div>
+    <div class="card stats-kpi">
+        <span class="stats-kpi-value">{% if acceptance_rate is not None %}{{ acceptance_rate }}%{% else %}—{% endif %}</span>
+        <span class="stats-kpi-label">Taux d'acceptation</span>
+    </div>
+    <div class="card stats-kpi">
+        <span class="stats-kpi-value">{{ top_city|default:"—" }}</span>
+        <span class="stats-kpi-label">Ville favorite</span>
+    </div>
+    <div class="card stats-kpi">
+        <span class="stats-kpi-value">{{ top_mood|default:"—" }}</span>
+        <span class="stats-kpi-label">Ambiance favorite</span>
+    </div>
+</div>
+
+<div class="stats-charts-grid">
+    <div class="card">
+        <h2 style="margin-bottom:0.8rem;font-size:1rem;">Rendez-vous par mois</h2>
+        <canvas id="months-chart" height="220"></canvas>
+    </div>
+    <div class="card">
+        <h2 style="margin-bottom:0.8rem;font-size:1rem;">Répartition par ambiance</h2>
+        {% if mood_labels %}
+            <canvas id="mood-chart" height="220"></canvas>
+        {% else %}
+            <p><em>Pas encore assez de données.</em></p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{% load static %}
+<script src="{% static 'js/vendor/chart.umd.min.js' %}"></script>
+<script>
+    const monthsLabels = {{ months_labels|safe }};
+    const monthsData = {{ months_data|safe }};
+    const moodLabels = {{ mood_labels|safe }};
+    const moodData = {{ mood_data|safe }};
+
+    new Chart(document.getElementById("months-chart"), {
+        type: "bar",
+        data: {
+            labels: monthsLabels,
+            datasets: [{ label: "Rendez-vous", data: monthsData, backgroundColor: "#c2185b", borderRadius: 6 }],
+        },
+        options: {
+            plugins: { legend: { display: false } },
+            scales: { y: { beginAtZero: true, ticks: { precision: 0 } } },
+        },
+    });
+
+    const moodCanvas = document.getElementById("mood-chart");
+    if (moodCanvas) {
+        new Chart(moodCanvas, {
+            type: "doughnut",
+            data: {
+                labels: moodLabels,
+                datasets: [{
+                    data: moodData,
+                    backgroundColor: ["#c2185b", "#e91e63", "#f06292", "#f8bbd0", "#ad1457", "#880e4f"],
+                }],
+            },
+            options: { plugins: { legend: { position: "bottom" } } },
+        });
+    }
+</script>
+{% endblock %}

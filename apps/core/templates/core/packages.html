@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Packages — Date With U{% endblock %}
+
+{% block content %}
+<div class="page-hero" style="--hero-image:url('https://picsum.photos/seed/dwu-packages/1600/500');">
+    <h1>Rendez-vous clé en main</h1>
+    <p>Une sélection déjà prête — choisis-en un et il ne te restera plus qu'à fixer la date.</p>
+</div>
+<div id="packages-app" class="places-grid">
+    {% csrf_token %}
+    <p><em>Chargement...</em></p>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/packages.js' %}"></script>
+{% endblock %}

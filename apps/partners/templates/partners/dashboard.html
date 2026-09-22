@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load icons %}
+
+{% block title %}Espace partenaires — Date With U{% endblock %}
+
+{% block content %}
+<div class="page-hero" style="--hero-image:url('https://picsum.photos/seed/dwu-partners/1600/500');">
+    <h1>{% icon "shield" %} Espace partenaires</h1>
+    <p>Gère les fiches des lieux que tu as revendiqués et suis leurs statistiques.</p>
+</div>
+
+{% if stats %}
+<div class="mydates-grid">
+    {% for s in stats %}
+    <div class="mydate-card">
+        <div class="mydate-body">
+            <h3>{{ s.place.name }}</h3>
+            <p class="mydate-meta">{% icon "eye" %} {{ s.view_count }} vues</p>
+            <p class="mydate-meta">{% icon "check-circle" %} {{ s.review_count }} avis · note {{ s.rating }}/5</p>
+            {% if s.pending_replies %}
+                <p class="mydate-meta" style="color:#a6720a;">{{ s.pending_replies }} avis sans réponse</p>
+            {% endif %}
+            <div class="mydate-actions">
+                <a class="btn btn-primary" href="{% url 'partners:edit_place' s.place.id %}">{% icon "user" %} Gérer la fiche</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p><em>Aucun lieu géré pour l'instant. Depuis la fiche d'un lieu sur Explorer, utilise « Ce lieu est le vôtre ? » pour le revendiquer.</em></p>
+{% endif %}
+
+{% if claims %}
+<h2 style="margin-top:2rem;font-size:1rem;">Historique des demandes</h2>
+<ul class="notifications-list">
+    {% for claim in claims %}
+    <li class="notif-row" style="cursor:default;">
+        <div class="notif-row-body">
+            <strong>{{ claim.place.name }}</strong>
+            <p>{{ claim.get_status_display }} — demandé le {{ claim.created_at|date:"d/m/Y" }}</p>
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endblock %}

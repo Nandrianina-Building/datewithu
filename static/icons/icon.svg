@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+    <defs>
+        <linearGradient id="dwuGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#e0165c"/>
+            <stop offset="100%" stop-color="#7a0b3a"/>
+        </linearGradient>
+    </defs>
+    <rect width="512" height="512" rx="112" fill="url(#dwuGrad)"/>
+    <path d="M256,436 C256,436 92,317 92,202 C92,140 140,92 200,92 C232,92 252,108 256,130 C260,108 280,92 312,92 C372,92 420,140 420,202 C420,317 256,436 256,436 Z"
+          fill="#ffffff"/>
+    <circle cx="256" cy="196" r="36" fill="url(#dwuGrad)"/>
+</svg>

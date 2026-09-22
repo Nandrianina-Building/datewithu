@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load icons %}
+
+{% block title %}Complète ton profil — Date With U{% endblock %}
+
+{% block content %}
+<div class="auth-status-card" style="text-align:left;max-width:520px;">
+    <div class="verify-icon" style="margin:0 auto 1rem;">{% icon "user" "icon-xl" %}</div>
+    <h1 style="text-align:center;">Plus qu'une étape !</h1>
+    <p style="text-align:center;">
+        Complète ces quelques infos obligatoires pour accéder à ton espace
+        et commencer à construire des rendez-vous.
+    </p>
+
+    <form method="post" enctype="multipart/form-data" class="auth-form">
+        {% csrf_token %}
+        {% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}
+        <p>
+            <label for="{{ form.first_name.id_for_label }}">Prénom *</label>
+            {{ form.first_name }}
+            {{ form.first_name.errors }}
+        </p>
+        <p>
+            <label for="{{ form.last_name.id_for_label }}">Nom *</label>
+            {{ form.last_name }}
+            {{ form.last_name.errors }}
+        </p>
+        <p>
+            <label for="{{ form.phone.id_for_label }}">Téléphone *</label>
+            {{ form.phone }}
+            {{ form.phone.errors }}
+        </p>
+        <p>
+            <label for="{{ form.birth_date.id_for_label }}">Date de naissance *</label>
+            {{ form.birth_date }}
+            <span class="helptext">La date ne peut pas être dans le futur.</span>
+            {{ form.birth_date.errors }}
+        </p>
+
+        <div class="avatar-picker">
+            <button type="button" class="avatar-picker-preview" id="avatar-picker-trigger" aria-label="Ajouter une photo de profil">
+                <img src="" alt="" id="avatar-preview-img" style="display:none;">
+                <span id="avatar-preview-fallback">{% icon "user" %}</span>
+                <span class="avatar-picker-badge">{% icon "edit" %}</span>
+            </button>
+            <div>
+                <p class="avatar-picker-label">Photo de profil <span style="font-weight:400;">(optionnel)</span></p>
+                <p class="helptext">Clique pour en ajouter une.</p>
+            </div>
+            {{ form.avatar }}
+        </div>
+
+        <button type="submit" class="btn btn-primary">{% icon "check-circle" %} Accéder à mon espace</button>
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{% load static %}
+<script src="{% static 'js/avatar-picker.js' %}"></script>
+{% endblock %}

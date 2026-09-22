@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load icons %}
+
+{% block title %}Messages — Date With U{% endblock %}
+
+{% block content %}
+<div class="mydates-header">
+    <div>
+        <h1>{% icon "mail" %} Messages</h1>
+        <p>Toutes tes conversations — invitations privées et fil public, au même endroit.</p>
+    </div>
+    <a href="{% url 'messages:received_requests' %}" class="btn">{% icon "clock" %} Demandes reçues</a>
+</div>
+
+<div id="inbox-list" class="inbox-list"><p><em>Chargement...</em></p></div>
+{% endblock %}
+
+{% block extra_js %}
+{% load static %}
+<script src="{% static 'js/inbox.js' %}"></script>
+{% endblock %}

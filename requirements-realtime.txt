@@ -1,0 +1,6 @@
+# Optionnel — uniquement si tu actives le chat temps réel (voir README,
+# section "Chat temps réel (WebSockets)"). Le chat fonctionne déjà en
+# polling HTTP sans rien de tout ça.
+channels>=4.0
+channels-redis>=4.2
+daphne>=4.0

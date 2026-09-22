@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load icons %}
+
+{% block title %}Confirme ton e-mail — Date With U{% endblock %}
+
+{% block content %}
+<div class="auth-status-card">
+    <div class="verify-icon">{% icon "mail" "icon-xl" %}</div>
+    <h1>Vérifie ta boîte mail</h1>
+    <p>
+        On a envoyé un lien d'activation à <strong>{{ user.email }}</strong>.
+        Clique dessus pour activer ton compte — c'est indispensable avant
+        d'accéder à ton espace et de créer un rendez-vous.
+    </p>
+    <p class="helptext">Le lien reste valable 24h. Pense à vérifier tes spams si tu ne le vois pas.</p>
+
+    <div class="auth-status-actions">
+        <form action="{% url 'accounts:resend_verification' %}" method="post" class="inline-form">
+            {% csrf_token %}
+            {% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}
+            <button type="submit" class="btn btn-primary">{% icon "send" %} Renvoyer l'e-mail</button>
+        </form>
+        <a class="btn" href="{% url 'accounts:logout' %}">{% icon "logout" %} Se déconnecter</a>
+    </div>
+</div>
+{% endblock %}

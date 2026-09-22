@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}Conditions Générales d'Utilisation — Date With U{% endblock %}
+
+{% block content %}
+<div class="legal-page">
+    <h1>Conditions Générales d'Utilisation</h1>
+    <p class="legal-updated">Dernière mise à jour : septembre 2026</p>
+
+    <h2>1. Objet</h2>
+    <p>
+        Date With U est une plateforme permettant de construire, partager et organiser des
+        rendez-vous à Madagascar. En créant un compte, tu acceptes les présentes conditions.
+    </p>
+
+    <h2>2. Inscription et compte</h2>
+    <p>
+        L'inscription nécessite une adresse e-mail valide et sa confirmation par lien
+        d'activation. Tu es responsable de la confidentialité de ton mot de passe et de
+        toute activité effectuée depuis ton compte. Les informations fournies doivent être
+        exactes ; l'usurpation d'identité ou la création d'un faux profil peut entraîner la
+        suspension du compte.
+    </p>
+
+    <h2>3. Comportement attendu</h2>
+    <p>
+        Le respect d'autrui est la règle de base : harcèlement, contenu inapproprié, spam ou
+        démarchage commercial ne sont pas tolérés. Tout compte peut être signalé via son
+        profil ; les signalements sont examinés par l'équipe de modération. Un compte
+        signalé de façon répétée ou pour un motif grave peut être suspendu ou supprimé.
+    </p>
+
+    <h2>4. Contenu publié</h2>
+    <p>
+        Les avis, messages et informations de profil que tu publies restent ta responsabilité.
+        Date With U se réserve le droit de retirer tout contenu manifestement illicite,
+        injurieux ou frauduleux.
+    </p>
+
+    <h2>5. Invitations et rendez-vous</h2>
+    <p>
+        Date With U met à disposition des outils pour construire et partager un rendez-vous ;
+        la plateforme n'est pas partie aux rendez-vous eux-mêmes et ne saurait être tenue
+        responsable de ce qui se passe entre les personnes qui se rencontrent via le service.
+        Nous t'encourageons à rester prudent·e, à privilégier les lieux publics pour une
+        première rencontre et à informer un proche de tes plans.
+    </p>
+
+    <h2>6. Résiliation</h2>
+    <p>
+        Tu peux supprimer ton compte à tout moment depuis ton profil. Date With U peut
+        suspendre ou résilier un compte en cas de non-respect des présentes conditions.
+    </p>
+
+    <h2>7. Contact</h2>
+    <p>
+        Pour toute question relative à ces conditions, écris-nous à
+        {{ config.contact_email|default:"contact@datewithu.mg" }}.
+    </p>
+</div>
+{% endblock %}

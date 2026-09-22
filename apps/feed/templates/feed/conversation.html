@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load icons %}
+
+{% block title %}Discussion — Date With U{% endblock %}
+
+{% block content %}
+<div id="chat-header" class="chat-header"><h1>Discussion</h1></div>
+<p id="feed-chat-post-caption" class="helptext" style="margin-top:-0.6rem;margin-bottom:1rem;"></p>
+
+<div id="feed-chat-app" data-conversation-id="{{ conversation_id }}">
+    {% csrf_token %}
+    <div id="chat-messages" class="chat-messages"><p><em>Chargement...</em></p></div>
+    <form id="chat-form" class="chat-form">
+        <input type="text" id="chat-input" placeholder="Écris un message..." autocomplete="off" required>
+        <button type="submit" class="btn btn-primary">Envoyer</button>
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{% load static %}
+<script src="{% static 'js/feed-chat.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load icons %}
+
+{% block title %}Suivi en direct — Date With U{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+{% endblock %}
+
+{% block content %}
+<div class="page-hero" style="--hero-image:url('https://picsum.photos/seed/dwu-track/1600/500');">
+    <h1>{% icon "map-pin" %} Suivi en direct</h1>
+    <p id="track-subtitle">Chargement...</p>
+</div>
+
+<div id="track-status" class="card" style="max-width:520px;margin-bottom:1rem;"></div>
+<div id="track-map" style="height:420px;border-radius:var(--radius-lg);overflow:hidden;"></div>
+{% endblock %}
+
+{% block extra_js %}
+{% load static %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>window.DWU_TRACK_TOKEN = "{{ token }}";</script>
+<script src="{% static 'js/track-location.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,168 @@
+{% extends "base.html" %}
+{% load icons %}
+
+{% block title %}{{ config.site_name }} — Le rendez-vous parfait à Madagascar{% endblock %}
+{% block body_class %}has-mobile-footer{% endblock %}
+
+{% block full_content %}
+{% if config.maintenance_mode and not user.is_staff %}
+    <section class="maintenance">
+        <div class="verify-icon">{% icon "heart" "icon-xl" %}</div>
+        <h1>{{ config.site_name }} prépare quelque chose de spécial.</h1>
+        <p>On revient très vite.</p>
+    </section>
+{% else %}
+
+    {% if messages %}
+        <div class="container" style="padding-bottom:0;">
+            <ul class="messages">
+                {% for message in messages %}
+                    <li class="message {{ message.tags }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    <section class="hero" style="--hero-image: url('https://i.ibb.co/Ldp0PJFT/Gemini-Generated-Image-i6ec66i6ec66i6ec.png');">
+        <span class="eyebrow">{% icon "map-pin" %} Fait pour Madagascar</span>
+        <h1>Construisez le rendez-vous idéal, du premier au prochain.</h1>
+        <p>Choisissez une ville, une ambiance et un budget : on s'occupe de trouver le lieu, l'activité et les détails. Plus de doutes, juste de belles rencontres.</p>
+        <div class="hero-actions">
+            {% if not user.is_authenticated %}
+                <a class="btn btn-primary" href="{% url 'accounts:register' %}">{% icon "heart" %} Créer mon compte</a>
+                <a class="btn" href="{% url 'accounts:login' %}">Se connecter</a>
+            {% else %}
+                <a class="btn btn-primary" href="{% url 'core:date_builder' %}">{% icon "sparkles" %} Créer un rendez-vous</a>
+                <a class="btn" href="{% url 'core:dashboard' %}">Mon espace</a>
+            {% endif %}
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="section-head">
+            <span class="kicker">Comment ça marche</span>
+            <h2>Trois étapes vers le rendez-vous parfait</h2>
+            <p>Un parcours guidé, pensé pour éviter les indécisions du "on va où ce soir ?".</p>
+        </div>
+        <div class="steps-grid">
+            <div class="step-card">
+                <div class="step-number">1</div>
+                <h3>Décrivez l'envie</h3>
+                <p>Ville, ambiance, budget et disponibilité — quelques choix suffisent.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">2</div>
+                <h3>Recevez des idées ciblées</h3>
+                <p>Lieux vérifiés avec photos, horaires, tarifs et note moyenne.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">3</div>
+                <h3>Partagez et confirmez</h3>
+                <p>Envoyez le plan à votre partenaire, discutez et ajustez ensemble.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" style="padding-top:0;">
+        <div class="section-head">
+            <span class="kicker">Pourquoi Date With U</span>
+            <h2>Un site pensé comme une vraie appli de rencontre</h2>
+        </div>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="icon-badge">{% icon "map-pin" "icon-lg" %}</div>
+                <h3>Lieux géolocalisés</h3>
+                <p>Chaque lieu est positionné par latitude/longitude sur une carte interactive, avec adresse, horaires et contacts.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon-badge">{% icon "shield" "icon-lg" %}</div>
+                <h3>Comptes vérifiés</h3>
+                <p>Vérification par e-mail, mots de passe robustes et sessions sécurisées pour une communauté de confiance.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon-badge">{% icon "gift" "icon-lg" %}</div>
+                <h3>Packages clé en main</h3>
+                <p>Pas envie de composer ? Choisissez un rendez-vous déjà pensé de A à Z.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon-badge">{% icon "send" "icon-lg" %}</div>
+                <h3>Invitations partageables</h3>
+                <p>Envoyez le plan par lien, avec aperçu visuel, à votre partenaire — même sans compte.</p>
+            </div>
+        </div>
+    </section>
+
+    {% if cities %}
+    <section class="section" style="padding-top:0;">
+        <div class="section-head">
+            <span class="kicker">Où sortir</span>
+            <h2>Des villes malgaches, une expérience à chaque coin de rue</h2>
+        </div>
+        <div class="city-scroll" id="city-scroll-list">
+            {% for city in cities %}
+                <a href="{% url 'core:explore' %}?city={{ city.slug }}" class="city-tile">
+                    {% if city.image %}
+                        <img src="{{ city.image.url }}" alt="{{ city.name }}" loading="lazy">
+                    {% else %}
+                        <img src="https://picsum.photos/seed/dwu-city-{{ city.slug }}/600/500" alt="{{ city.name }}" loading="lazy">
+                    {% endif %}
+                    <div class="city-tile-overlay">
+                        <div>
+                            <h3>{{ city.name }}</h3>
+                            {% if city.region %}<span>{{ city.region }}</span>{% endif %}
+                        </div>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+        {% if cities_has_more %}
+            <div style="text-align:center;margin-top:1.2rem;">
+                <button type="button" id="cities-more-btn" class="btn" data-page="1">Voir plus de villes</button>
+            </div>
+        {% endif %}
+    </section>
+    {% endif %}
+
+    {% if popular_places %}
+    <section class="section" style="padding-top:0;">
+        <div class="section-head">
+            <span class="kicker">Sélection du moment</span>
+            <h2>Lieux recommandés par la communauté</h2>
+        </div>
+        <div class="places-grid">
+            {% for place in popular_places %}
+                <div class="place-card">
+                    {% if place.main_image %}
+                        <img src="{{ place.main_image.url }}" alt="{{ place.name }}" class="place-card-media" loading="lazy">
+                    {% else %}
+                        <img src="https://picsum.photos/seed/dwu-place-{{ place.slug }}/500/400" alt="{{ place.name }}" class="place-card-media" loading="lazy">
+                    {% endif %}
+                    <div class="place-card-body">
+                        {% if place.is_recommended %}<span class="badge-featured">{% icon "star" %} Recommandé</span>{% endif %}
+                        <h3 style="margin-bottom:0.2rem;">{{ place.name|truncatechars:40 }}</h3>
+                        <p style="margin-bottom:0.4rem;font-size:0.85rem;">{{ place.city.name }}{% if place.category %} · {{ place.category.name }}{% endif %}</p>
+                        {% if place.short_description %}<p style="font-size:0.88rem;">{{ place.short_description|truncatechars:90 }}</p>{% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    <div class="cta-banner">
+        <h2>Prêt·e à sortir des sentiers battus ?</h2>
+        <p>Rejoignez Date With U et laissez-vous guider vers votre prochain rendez-vous.</p>
+        {% if not user.is_authenticated %}
+            <a class="btn btn-primary" href="{% url 'accounts:register' %}" style="background:#fff;color:var(--rose-700);">Commencer gratuitement</a>
+        {% else %}
+            <a class="btn btn-primary" href="{% url 'core:date_builder' %}" style="background:#fff;color:var(--rose-700);">Créer un rendez-vous</a>
+        {% endif %}
+    </div>
+
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+{% load static %}
+<script src="{% static 'js/home-cities.js' %}"></script>
+{% endblock %}

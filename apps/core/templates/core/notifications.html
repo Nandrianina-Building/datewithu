@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load static icons %}
+
+{% block title %}Notifications — Date With U{% endblock %}
+
+{% block content %}
+{% csrf_token %}
+
+<div class="page-hero" style="--hero-image:url('https://picsum.photos/seed/dwu-notifs/1600/500');">
+    <h1>{% icon "bell" %} Notifications</h1>
+    <p>Tout ce qui bouge sur tes rendez-vous : vues, réponses, messages.</p>
+</div>
+
+<div class="notifications-header">
+    <span></span>
+    <button type="button" id="mark-all-read-btn" class="link-btn">{% icon "check-circle" %} Tout marquer comme lu</button>
+</div>
+
+<ul id="notifications-full-list" class="notifications-list">
+    <li><em>Chargement...</em></li>
+</ul>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/notifications-page.js' %}"></script>
+{% endblock %}

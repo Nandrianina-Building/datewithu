@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load icons %}
+
+{% block title %}Premium — Date With U{% endblock %}
+
+{% block content %}
+<div class="page-hero" style="--hero-image:url('https://picsum.photos/seed/dwu-premium/1600/500');">
+    <h1>{% icon "check-circle" %} Date With U Premium</h1>
+    <p>Plus de rendez-vous, plus d'options — pour celles et ceux qui sortent souvent.</p>
+</div>
+
+{% if active %}
+    <div class="card status-card-success" style="max-width:560px;">
+        <h2 style="margin-bottom:0.3rem;">{% icon "check-circle" %} Tu es Premium !</h2>
+        <p>Formule <strong>{{ active.plan.name }}</strong>, active jusqu'au {{ active.expires_at|date:"d/m/Y" }}.</p>
+    </div>
+{% elif pending %}
+    <div class="card status-card-warning" style="max-width:560px;">
+        <h2 style="margin-bottom:0.3rem;">{% icon "clock" %} Demande en attente</h2>
+        <p>Ta demande pour la formule <strong>{{ pending.plan.name }}</strong> est en cours de validation
+        (généralement sous 24h après réception du paiement).</p>
+    </div>
+{% else %}
+    <div class="pricing-grid">
+        {% for plan in plans %}
+        <div class="pricing-card {% if forloop.counter == 2 %}pricing-card-featured{% endif %}">
+            {% if forloop.counter == 2 %}<span class="badge-featured">Le plus populaire</span>{% endif %}
+            <h2>{{ plan.name }}</h2>
+            <p class="pricing-price">{{ plan.price|floatformat:0 }} <span>Ar / mois</span></p>
+            <ul class="pricing-perks">
+                {% for perk in plan.perks_list %}<li>{% icon "check-circle" %} {{ perk }}</li>{% endfor %}
+            </ul>
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="plan_id" value="{{ plan.id }}">
+                <p style="margin-bottom:0.6rem;">
+                    <label style="font-size:0.78rem;">Référence de paiement Mobile Money (optionnel pour l'instant)</label>
+                    <input type="text" name="payment_reference" placeholder="Ex : MVola #123456">
+                </p>
+                <button type="submit" class="btn btn-primary" style="width:100%;">Choisir cette formule</button>
+            </form>
+        </div>
+        {% endfor %}
+    </div>
+    <p class="helptext" style="text-align:center;margin-top:1rem;max-width:560px;margin-left:auto;margin-right:auto;">
+        Paiement par Mobile Money (MVola, Orange Money, Airtel Money) — envoie le paiement puis indique la référence
+        ci-dessus. La validation est manuelle pour l'instant, l'automatisation arrive bientôt.
+    </p>
+{% endif %}
+{% endblock %}

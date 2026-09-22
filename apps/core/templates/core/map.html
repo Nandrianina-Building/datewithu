@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load static icons %}
+
+{% block title %}Carte des lieux — Date With U{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+{% endblock %}
+
+{% block content %}
+<div class="page-hero" style="--hero-image:url('https://picsum.photos/seed/dwu-map/1600/500');">
+    <h1>Carte des lieux</h1>
+    <p>Chaque lieu est positionné par latitude/longitude — clique sur un marqueur pour voir tous les détails.</p>
+</div>
+
+<div class="map-toolbar">
+    <select id="map-filter-city"><option value="">Toutes les villes</option></select>
+    <select id="map-filter-category"><option value="">Toutes les catégories</option></select>
+    <button type="button" id="map-locate-btn">{% icon "compass" %} Me localiser</button>
+</div>
+
+<div id="places-map" class="places-map"></div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="{% static 'js/place-detail.js' %}"></script>
+<script src="{% static 'js/map.js' %}"></script>
+{% endblock %}

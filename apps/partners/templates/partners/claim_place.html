@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load icons %}
+
+{% block title %}Revendiquer {{ place.name }} — Date With U{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width:560px;margin:0 auto;">
+    <h1 style="font-size:1.3rem;margin-bottom:0.3rem;">{% icon "shield" %} Revendiquer « {{ place.name }} »</h1>
+    <p style="color:var(--ink-soft);margin-bottom:1rem;">
+        Tu es le/la gérant·e ou propriétaire de cet établissement ? Envoie une demande — après
+        vérification, tu pourras éditer la fiche et répondre aux avis.
+    </p>
+    <form method="post" class="auth-form">
+        {% csrf_token %}
+        <p>
+            <label for="{{ form.role.id_for_label }}">Ton rôle</label>
+            {{ form.role }}
+        </p>
+        <p>
+            <label for="{{ form.proof_details.id_for_label }}">Comment vérifier ton lien avec l'établissement ?</label>
+            {{ form.proof_details }}
+        </p>
+        <button type="submit" class="btn btn-primary">Envoyer la demande</button>
+    </form>
+</div>
+{% endblock %}

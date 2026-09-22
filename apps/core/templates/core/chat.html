@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Discussion — Date With U{% endblock %}
+
+{% block content %}
+<div id="chat-header" class="chat-header">
+    <h1>{{ chat_title }}</h1>
+</div>
+
+<div style="margin-bottom:1rem;">
+    <button type="button" id="safety-share-btn" class="btn">{% load icons %}{% icon "shield" %} Prévenir un proche</button>
+</div>
+
+<div id="chat-app" data-plan-id="{{ date_plan_id }}" data-token="{{ token }}" data-csrf-token="{{ csrf_token }}">
+    {% csrf_token %}
+    <div id="chat-messages" class="chat-messages"><p><em>Chargement...</em></p></div>
+    <form id="chat-form" class="chat-form">
+        <input type="text" id="chat-input" placeholder="Écris un message..." autocomplete="off" required>
+        <button type="submit" class="btn btn-primary">Envoyer</button>
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/chat.js' %}?v=2"></script>
+<script src="{% static 'js/safety-share.js' %}"></script>
+{% endblock %}

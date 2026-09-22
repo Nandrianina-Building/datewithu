@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% load icons %}
+
+{% block title %}Mon profil — Date With U{% endblock %}
+
+{% block content %}
+<div class="ig-profile-header">
+    <div class="ig-avatar-wrap">
+        {% if user.avatar %}
+            <img src="{{ user.avatar.url }}" alt="" class="ig-avatar">
+        {% else %}
+            <div class="ig-avatar ig-avatar-fallback">{{ user.username|slice:":1"|upper }}</div>
+        {% endif %}
+    </div>
+
+    <div class="ig-profile-main">
+        <div class="ig-profile-top">
+            <h1>{{ user.first_name|default:user.username }}</h1>
+            <a href="{% url 'accounts:profile_edit' %}" class="btn ig-edit-btn">{% icon "edit" %} Modifier le profil</a>
+        </div>
+
+        <div class="ig-stats-row" id="profile-stats-row">
+            <div class="ig-stat"><strong id="stat-dates">—</strong><span>Rendez-vous</span></div>
+            <div class="ig-stat"><strong id="stat-favorites">—</strong><span>Favoris</span></div>
+            <div class="ig-stat"><strong>{{ user.date_joined|date:"Y" }}</strong><span>Membre depuis</span></div>
+        </div>
+
+        <div class="ig-badges">
+            {% if user.is_verified %}
+                <span class="badge-featured" style="background:#e6f8ec;color:var(--success);">{% icon "check-circle" %} Compte vérifié</span>
+            {% else %}
+                <span class="badge-featured">{% icon "mail" %} E-mail non vérifié</span>
+                <form action="{% url 'accounts:resend_verification' %}" method="post" class="inline-form">
+                    {% csrf_token %}
+                    <button type="submit" class="link-btn">Renvoyer l'e-mail</button>
+                </form>
+            {% endif %}
+        </div>
+
+        {% if user.bio %}
+            <p class="ig-bio">{{ user.bio }}</p>
+        {% else %}
+            <p class="ig-bio ig-bio-empty"><em>Ajoute une bio pour te présenter.</em></p>
+        {% endif %}
+    </div>
+</div>
+
+<div class="card ig-section" style="max-width:640px;">
+    <h2 style="margin-bottom:0.8rem;">{% icon "lock" %} Sécurité du compte</h2>
+    <p><a href="{% url 'accounts:password_change' %}">Changer mon mot de passe →</a></p>
+    <p style="margin-top:0.8rem;font-weight:600;">Comptes bloqués</p>
+    <ul id="blocked-users-list"><li><em>Chargement...</em></li></ul>
+</div>
+
+<div class="card ig-section ig-danger-zone" style="max-width:640px;">
+    <h2 style="margin-bottom:0.4rem;color:var(--danger);">Zone de danger</h2>
+    <p style="color:var(--ink-soft);margin-bottom:0.8rem;">Supprimer ton compte est définitif et irréversible.</p>
+    <a href="{% url 'accounts:delete_account' %}" class="btn" style="border-color:var(--danger);color:var(--danger);">
+        Supprimer mon compte
+    </a>
+</div>
+
+<form action="{% url 'accounts:logout' %}" method="post" class="ig-logout-form">
+    {% csrf_token %}
+    <button type="submit" class="btn ig-logout-btn">{% icon "logout" %} Déconnexion</button>
+</form>
+{% endblock %}
+
+{% block extra_js %}
+{% load static %}
+<script src="{% static 'js/blocked-list.js' %}"></script>
+<script src="{% static 'js/profile-stats.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}Politique de confidentialité — Date With U{% endblock %}
+
+{% block content %}
+<div class="legal-page">
+    <h1>Politique de confidentialité</h1>
+
+    <h2>1. Données collectées</h2>
+    <p>
+        Pour fonctionner, Date With U collecte : ton nom, prénom, adresse e-mail, numéro de
+        téléphone et date de naissance (à l'inscription puis lors de la complétion de ton
+        profil), ainsi que, si tu les renseignes, ta photo de profil et ta bio. Les
+        rendez-vous que tu construis (ville, ambiance, lieu, date, message) et les messages
+        échangés dans le chat sont également stockés pour assurer le service.
+    </p>
+
+    <h2>2. Utilisation des données</h2>
+    <p>
+        Ces informations servent uniquement à faire fonctionner le service : créer et
+        partager tes rendez-vous, te permettre de discuter avec la personne concernée,
+        t'envoyer les notifications liées à tes rendez-vous (par e-mail si tu ne les as pas
+        désactivées dans ton profil), et assurer la sécurité de la plateforme (signalements,
+        blocages).
+    </p>
+
+    <h2>3. Partage des données</h2>
+    <p>
+        Ton prénom/nom et ta photo de profil sont visibles par les personnes avec qui tu
+        échanges une invitation (profil public minimal). Aucune donnée n'est vendue à des
+        tiers. Aucune donnée n'est partagée avec des partenaires publicitaires — Date With U
+        ne fait pas de publicité.
+    </p>
+
+    <h2>4. Conservation</h2>
+    <p>
+        Tes données sont conservées tant que ton compte existe. En cas de suppression de
+        compte, tes informations personnelles sont supprimées ; certaines données liées aux
+        rendez-vous déjà partagés avec un tiers peuvent être conservées de façon anonymisée.
+    </p>
+
+    <h2>5. Tes droits</h2>
+    <p>
+        Tu peux à tout moment consulter et modifier tes informations depuis ton profil,
+        désactiver les notifications par e-mail, ou supprimer définitivement ton compte
+        (bouton « Supprimer mon compte » dans ton profil). Pour toute autre demande
+        (export de données, question sur cette politique), écris-nous à
+        {{ config.contact_email|default:"contact@datewithu.mg" }}.
+    </p>
+
+    <h2>6. Cookies</h2>
+    <p>
+        Date With U utilise uniquement des cookies techniques nécessaires au fonctionnement
+        du site (session de connexion, protection contre les attaques CSRF) — aucun cookie
+        publicitaire ou de suivi tiers.
+    </p>
+</div>
+{% endblock %}

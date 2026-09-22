@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% load static icons %}
+
+{% block title %}Mon espace — Date With U{% endblock %}
+{% block body_class %}has-mobile-footer dashboard-page{% endblock %}
+
+{% block content %}
+{% csrf_token %}
+
+<div class="dash-greeting">
+    <div>
+        <span class="dash-greeting-eyebrow">{% icon "sparkles" %} Ton espace</span>
+        <h1>Bonjour {{ user.first_name|default:user.username }}</h1>
+        <p>Prêt·e pour ton prochain rendez-vous ?</p>
+    </div>
+    <a href="{% url 'core:date_builder' %}" class="btn btn-primary dash-greeting-cta">{% icon "sparkles" %} Nouveau rendez-vous</a>
+</div>
+
+<div class="dash-quickbar" role="navigation" aria-label="Actions rapides">
+    <button type="button" class="dash-quick-btn" id="surprise-date-btn">
+        <span class="dash-quick-icon">{% icon "dice" %}</span>
+        <span>Surprise</span>
+    </button>
+    <a class="dash-quick-btn" href="{% url 'core:packages' %}">
+        <span class="dash-quick-icon">{% icon "gift" %}</span>
+        <span>Packages</span>
+    </a>
+    <a class="dash-quick-btn" href="{% url 'core:map' %}">
+        <span class="dash-quick-icon">{% icon "map" %}</span>
+        <span>Carte</span>
+    </a>
+    <a class="dash-quick-btn" href="{% url 'core:statistics' %}">
+        <span class="dash-quick-icon">{% icon "sparkles" %}</span>
+        <span>Stats</span>
+    </a>
+    <a class="dash-quick-btn" href="{% url 'core:premium' %}">
+        <span class="dash-quick-icon">{% icon "check-circle" %}</span>
+        <span>Premium{% if user.is_premium %} ✓{% endif %}</span>
+    </a>
+    <a class="dash-quick-btn" href="{% url 'feed:feed' %}">
+        <span class="dash-quick-icon">{% icon "sparkles" %}</span>
+        <span>Le Fil</span>
+    </a>
+</div>
+
+<div id="pending-ratings-banner"></div>
+
+<div class="dash-panels">
+    <section class="dash-panel" id="my-dates-card">
+        <header class="dash-panel-head">
+            <span class="dash-panel-icon">{% icon "clock" %}</span>
+            <h2>Mes rendez-vous</h2>
+            <a href="{% url 'core:my_dates' %}" class="dash-panel-more">Tout voir</a>
+        </header>
+        <ul id="my-dates-list" class="dash-panel-list"><li><em>Chargement...</em></li></ul>
+    </section>
+    <section class="dash-panel" id="favorites-card">
+        <header class="dash-panel-head">
+            <span class="dash-panel-icon">{% icon "heart" %}</span>
+            <h2>Favoris</h2>
+            <a href="{% url 'core:explore' %}" class="dash-panel-more">Explorer</a>
+        </header>
+        <ul id="favorites-list" class="dash-panel-list"><li><em>Chargement...</em></li></ul>
+    </section>
+    <section class="dash-panel" id="notifications-card">
+        <header class="dash-panel-head">
+            <span class="dash-panel-icon">{% icon "bell" %}</span>
+            <h2>Notifications</h2>
+            <a href="{% url 'core:notifications' %}" class="dash-panel-more">Tout voir</a>
+        </header>
+        <ul id="notifications-list" class="dash-panel-list"><li><em>Chargement...</em></li></ul>
+    </section>
+</div>
+
+<h2 class="dash-section-title">{% icon "sparkles" %} Recommandé pour toi</h2>
+<div id="recommendations-grid" class="mydates-grid" role="region" aria-label="Recommandations pour toi" tabindex="0"><p><em>Chargement...</em></p></div>
+{% endblock %}
+
+{% block extra_js %}
+{% load static %}
+<script src="{% static 'js/date-ratings.js' %}"></script>
+<script src="{% static 'js/invite-share.js' %}"></script>
+<script src="{% static 'js/my-dates.js' %}?v=2"></script>
+<script src="{% static 'js/favorites.js' %}?v=2"></script>
+<script src="{% static 'js/notifications.js' %}?v=2"></script>
+<script src="{% static 'js/surprise.js' %}?v=2"></script>
+<script src="{% static 'js/recommendations.js' %}"></script>
+{% endblock %}

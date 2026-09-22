@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load icons %}
+
+{% block title %}{{ profile_user.first_name|default:profile_user.username }} — Date With U{% endblock %}
+
+{% block content %}
+<div style="display:flex;align-items:center;gap:1.2rem;margin-bottom:1.6rem;flex-wrap:wrap;">
+    {% if profile_user.avatar %}
+        <img src="{{ profile_user.avatar.url }}" alt="" class="avatar avatar-lg">
+    {% else %}
+        <div class="avatar avatar-lg">{{ profile_user.username|slice:":1"|upper }}</div>
+    {% endif %}
+    <div>
+        <h1 style="margin-bottom:0.2rem;">{{ profile_user.get_full_name|default:profile_user.username }}</h1>
+        <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+            {% if profile_user.is_verified %}
+                <span class="badge-featured" style="background:#e6f8ec;color:var(--success);">{% icon "check-circle" %} Compte vérifié</span>
+            {% endif %}
+            {% if profile_user.identity_verified %}
+                <span class="badge-featured" style="background:#e6f0fc;color:#1a56c2;">{% icon "shield" %} Identité vérifiée</span>
+            {% endif %}
+            {% if reliability_avg %}
+                <span class="badge-featured" style="background:#fff6e0;color:#a6720a;">★ {{ reliability_avg }}/5 de fiabilité ({{ reliability_count }})</span>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="card" style="max-width:520px;">
+    {% if profile_user.bio %}
+        <p>{{ profile_user.bio }}</p>
+    {% else %}
+        <p><em>Ce membre n'a pas encore ajouté de bio.</em></p>
+    {% endif %}
+</div>
+
+{% if user.is_authenticated and user.id != profile_user.id %}
+<div class="card" style="max-width:520px;margin-top:1rem;">
+    <h2 style="margin-bottom:0.6rem;font-size:1rem;">Sécurité</h2>
+    <div id="safety-actions" data-user-id="{{ profile_user.id }}" data-blocked="{{ is_blocked|yesno:'true,false' }}" style="display:flex;gap:0.7rem;flex-wrap:wrap;">
+        <button type="button" id="block-btn" class="btn">
+            {% if is_blocked %}{% icon "check-circle" %} Débloquer{% else %}{% icon "slash-circle" %} Bloquer{% endif %}
+        </button>
+        <button type="button" id="report-btn" class="btn">{% icon "x-circle" %} Signaler</button>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+{% load static %}
+<script src="{% static 'js/safety.js' %}"></script>
+{% endblock %}

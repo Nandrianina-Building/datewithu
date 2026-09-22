@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% load icons %}
+
+{% block title %}Modifier mon profil — Date With U{% endblock %}
+
+{% block content %}
+<div class="edit-profile-head">
+    <a href="{% url 'accounts:profile' %}" class="link-btn">← Retour au profil</a>
+    <h1>Modifier mon profil</h1>
+</div>
+
+<div class="card" style="max-width:560px;">
+    <form method="post" enctype="multipart/form-data" class="auth-form" id="profile-edit-form">
+        {% csrf_token %}
+
+        <div class="avatar-picker">
+            <button type="button" class="avatar-picker-preview" id="avatar-picker-trigger" aria-label="Changer la photo de profil">
+                {% if user.avatar %}
+                    <img src="{{ user.avatar.url }}" alt="" id="avatar-preview-img">
+                {% else %}
+                    <img src="" alt="" id="avatar-preview-img" style="display:none;">
+                    <span id="avatar-preview-fallback">{{ user.username|slice:":1"|upper }}</span>
+                {% endif %}
+                <span class="avatar-picker-badge">{% icon "edit" %}</span>
+            </button>
+            <div>
+                <p class="avatar-picker-label">Photo de profil</p>
+                <p class="helptext">Clique sur la photo pour la changer.</p>
+            </div>
+            {{ form.avatar }}
+        </div>
+
+        <p>
+            <label for="{{ form.first_name.id_for_label }}">Prénom</label>
+            {{ form.first_name }}
+        </p>
+        <p>
+            <label for="{{ form.last_name.id_for_label }}">Nom</label>
+            {{ form.last_name }}
+        </p>
+        <p>
+            <label for="{{ form.email.id_for_label }}">E-mail</label>
+            {{ form.email }}
+            <span class="helptext">Changer d'adresse redemandera une vérification.</span>
+        </p>
+        <p>
+            <label for="{{ form.phone.id_for_label }}">Téléphone</label>
+            {{ form.phone }}
+        </p>
+        <p>
+            <label for="{{ form.bio.id_for_label }}">Bio</label>
+            {{ form.bio }}
+        </p>
+        <p>
+            <label for="{{ form.birth_date.id_for_label }}">Date de naissance</label>
+            {{ form.birth_date }}
+            <span class="helptext">La date ne peut pas être dans le futur.</span>
+        </p>
+        <p class="checkbox-field">
+            {{ form.email_notifications_enabled }}
+            <label for="{{ form.email_notifications_enabled.id_for_label }}">
+                Recevoir aussi les notifications importantes par e-mail (invitation acceptée, nouveau message...)
+            </label>
+        </p>
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{% load static %}
+<script src="{% static 'js/avatar-picker.js' %}"></script>
+{% endblock %}

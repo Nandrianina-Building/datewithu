@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load icons %}
+
+{% block title %}Demandes reçues — Date With U{% endblock %}
+
+{% block content %}
+<div class="mydates-header">
+    <div>
+        <h1>{% icon "clock" %} Demandes reçues</h1>
+        <p>Des personnes intéressées par tes idées de sortie publiées sur le fil.</p>
+    </div>
+    <a href="{% url 'messages:inbox' %}" class="btn">{% icon "mail" %} Retour aux messages</a>
+</div>
+
+<div id="requests-list" class="inbox-list"><p><em>Chargement...</em></p></div>
+{% endblock %}
+
+{% block extra_js %}
+{% load static %}
+<script src="{% static 'js/received-requests.js' %}"></script>
+{% endblock %}

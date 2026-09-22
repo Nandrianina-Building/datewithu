@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load icons %}
+
+{% block title %}Erreur serveur — Date With U{% endblock %}
+
+{% block content %}
+<div class="error-page">
+    <div class="verify-icon">{% icon "shield" "icon-xl" %}</div>
+    <h1>500 — Une erreur est survenue</h1>
+    <p>
+        Quelque chose s'est mal passé de notre côté. L'équipe a été notifiée, réessaie dans
+        quelques instants.
+    </p>
+    <div class="error-actions">
+        <a class="btn btn-primary" href="/">{% icon "heart" %} Retour à l'accueil</a>
+    </div>
+</div>
+{% endblock %}

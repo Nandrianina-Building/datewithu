@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load icons %}
+
+{% block title %}Gérer {{ place.name }} — Date With U{% endblock %}
+
+{% block content %}
+<h1 style="font-size:1.3rem;">{% icon "user" %} {{ place.name }}</h1>
+
+<div class="card" style="max-width:640px;margin-bottom:1.5rem;">
+    <h2 style="font-size:1rem;margin-bottom:0.8rem;">Informations de la fiche</h2>
+    <form method="post" class="auth-form">
+        {% csrf_token %}
+        <p>
+            <label for="{{ form.short_description.id_for_label }}">Description courte</label>
+            {{ form.short_description }}
+        </p>
+        <p>
+            <label for="{{ form.full_description.id_for_label }}">Description complète</label>
+            {{ form.full_description }}
+        </p>
+        <p>
+            <label for="{{ form.phone.id_for_label }}">Téléphone</label>
+            {{ form.phone }}
+        </p>
+        <p>
+            <label for="{{ form.email.id_for_label }}">E-mail</label>
+            {{ form.email }}
+        </p>
+        <p>
+            <label for="{{ form.website.id_for_label }}">Site web</label>
+            {{ form.website }}
+        </p>
+        <p>
+            <label for="{{ form.facebook.id_for_label }}">Facebook</label>
+            {{ form.facebook }}
+        </p>
+        <p>
+            <label for="{{ form.instagram.id_for_label }}">Instagram</label>
+            {{ form.instagram }}
+        </p>
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+    </form>
+</div>
+
+<div class="card" style="max-width:640px;">
+    <h2 style="font-size:1rem;margin-bottom:0.8rem;">Avis clients</h2>
+    {% for review in reviews %}
+        <div style="border-bottom:1px solid var(--border);padding:0.8rem 0;">
+            <strong>{{ review.user }}</strong> — ★ {{ review.rating }}/5
+            <p style="color:var(--ink-soft);">{{ review.comment }}</p>
+            {% if review.owner_reply %}
+                <div class="invitation-detail-card" style="margin-top:0.5rem;">
+                    <strong>Ta réponse :</strong> {{ review.owner_reply }}
+                </div>
+            {% else %}
+                <form method="post" action="{% url 'partners:reply_review' review.id %}" style="margin-top:0.5rem;">
+                    {% csrf_token %}
+                    <textarea name="owner_reply" rows="2" placeholder="Répondre publiquement à cet avis..." style="width:100%;margin-bottom:0.4rem;"></textarea>
+                    <button type="submit" class="btn">Répondre</button>
+                </form>
+            {% endif %}
+        </div>
+    {% empty %}
+        <p><em>Aucun avis pour l'instant.</em></p>
+    {% endfor %}
+</div>
+{% endblock %}

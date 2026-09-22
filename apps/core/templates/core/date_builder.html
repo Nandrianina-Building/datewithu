@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Créer un rendez-vous — Date With U{% endblock %}
+
+{% block content %}
+<div class="page-hero" style="--hero-image:url('https://picsum.photos/seed/dwu-builder/1600/500');">
+    <h1>Construisez votre rendez-vous</h1>
+    <p>Sept étapes rapides, avec de vraies options — pas de longs formulaires.</p>
+</div>
+
+<div class="db-step-shell">
+    <div id="date-builder" data-start-url="{% url 'core:home' %}">
+        {% csrf_token %}
+        <div id="db-progress" class="db-progress"></div>
+        <div id="db-step" class="db-step">Chargement...</div>
+        <div id="db-error" class="db-error"></div>
+    </div>
+    <div class="db-step-visual">
+        <img id="db-visual-image" src="https://picsum.photos/seed/dwu-builder-side/500/900" alt="">
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    window.DATE_BUILDER_API = "/api/date-builder/";
+</script>
+<script src="{% static 'js/invite-share.js' %}"></script>
+<script src="{% static 'js/date-builder.js' %}?v=4"></script>
+{% endblock %}

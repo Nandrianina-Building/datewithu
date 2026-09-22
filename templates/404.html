@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load icons %}
+
+{% block title %}Page introuvable — Date With U{% endblock %}
+{% block meta_description %}Cette page n'existe pas ou plus sur Date With U.{% endblock %}
+
+{% block content %}
+<div class="error-page">
+    <div class="verify-icon">{% icon "map-pin" "icon-xl" %}</div>
+    <h1>404 — Page introuvable</h1>
+    <p>
+        Le lieu que tu cherches n'existe pas, a été déplacé, ou l'adresse contient une erreur.
+    </p>
+    <div class="error-actions">
+        <a class="btn btn-primary" href="{% url 'core:home' %}">{% icon "heart" %} Retour à l'accueil</a>
+        {% if user.is_authenticated %}
+            <a class="btn" href="{% url 'core:explore' %}">Explorer les lieux</a>
+        {% else %}
+            <a class="btn" href="{% url 'accounts:login' %}">Se connecter</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% load static icons %}
+
+{% block title %}Dashboard admin — Date With U{% endblock %}
+
+{% block content %}
+<h1>Dashboard administrateur</h1>
+{% csrf_token %}
+
+<div class="admin-shell">
+    <nav class="admin-sidebar" id="admin-nav">
+        <button type="button" class="active" data-tab="overview">{% icon "compass" %} Vue d'ensemble</button>
+        <button type="button" data-tab="dates">{% icon "map" %} Rendez-vous</button>
+        <button type="button" data-tab="places">{% icon "map-pin" %} Modération lieux</button>
+        <button type="button" data-tab="users">{% icon "user" %} Utilisateurs</button>
+        <button type="button" data-tab="settings">{% icon "shield" %} Paramètres</button>
+        <a href="/{{ admin_url_path }}" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:0.6rem;padding:0.7rem 0.8rem;font-weight:600;color:var(--ink-soft);text-decoration:none;">
+            {% icon "lock" %} Django Admin (avancé)
+        </a>
+    </nav>
+
+    <div>
+        <section class="admin-tab active" id="tab-overview">
+            <div class="dashboard-grid" id="admin-stats-grid">
+                <p><em>Chargement...</em></p>
+            </div>
+        </section>
+
+        <section class="admin-tab" id="tab-dates">
+            <h2>Vue d'ensemble des rendez-vous</h2>
+            <div class="admin-toolbar">
+                <select id="filter-when">
+                    <option value="">Toutes les dates</option>
+                    <option value="upcoming">À venir</option>
+                    <option value="past">Passées</option>
+                </select>
+                <select id="filter-status">
+                    <option value="">Tous statuts</option>
+                    <option value="accepted">Acceptée</option>
+                    <option value="maybe">Peut-être</option>
+                    <option value="declined">Déclinée</option>
+                    <option value="pending">En attente</option>
+                </select>
+            </div>
+            <div id="admin-dates-overview"><p><em>Chargement...</em></p></div>
+        </section>
+
+        <section class="admin-tab" id="tab-places">
+            <h2>Modération des lieux</h2>
+            <p class="placeholder" style="margin-top:0;">Lieux inactifs en premier — active/désactive en un clic sans passer par le Django Admin.</p>
+            <div id="admin-places-moderation"><p><em>Chargement...</em></p></div>
+        </section>
+
+        <section class="admin-tab" id="tab-users">
+            <h2>Utilisateurs</h2>
+            <div class="admin-toolbar">
+                <input type="search" id="user-search" placeholder="Rechercher un nom ou un e-mail...">
+                <select id="user-filter-verified">
+                    <option value="">Vérifiés + non vérifiés</option>
+                    <option value="1">Vérifiés uniquement</option>
+                    <option value="0">Non vérifiés uniquement</option>
+                </select>
+            </div>
+            <div id="admin-users-list"><p><em>Chargement...</em></p></div>
+        </section>
+
+        <section class="admin-tab" id="tab-settings">
+            <h2>Paramètres du site</h2>
+            <div class="card" style="max-width:520px;">
+                <div class="switch-row">
+                    <span>Mode maintenance</span>
+                    <label class="switch"><input type="checkbox" data-setting="maintenance_mode"><span class="slider"></span></label>
+                </div>
+                <div class="switch-row">
+                    <span>Inscriptions ouvertes</span>
+                    <label class="switch"><input type="checkbox" data-setting="registration_enabled"><span class="slider"></span></label>
+                </div>
+                <div class="switch-row">
+                    <span>Chat activé</span>
+                    <label class="switch"><input type="checkbox" data-setting="chat_enabled"><span class="slider"></span></label>
+                </div>
+                <div class="switch-row" style="border-bottom:none;">
+                    <span>Avis activés</span>
+                    <label class="switch"><input type="checkbox" data-setting="reviews_enabled"><span class="slider"></span></label>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/admin-dashboard.js' %}"></script>
+{% endblock %}

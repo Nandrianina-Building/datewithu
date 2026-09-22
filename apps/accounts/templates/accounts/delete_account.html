@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load icons %}
+
+{% block title %}Supprimer mon compte — Date With U{% endblock %}
+
+{% block content %}
+<div class="auth-status-card" style="text-align:left;max-width:480px;">
+    <h1 style="color:var(--danger);">{% icon "close" %} Supprimer mon compte</h1>
+    <p>
+        Cette action est <strong>définitive et irréversible</strong> : ton profil, tes
+        rendez-vous, tes favoris et tes messages seront supprimés. Confirme ton mot de passe
+        pour continuer.
+    </p>
+
+    <form method="post" class="auth-form">
+        {% csrf_token %}
+        <p>
+            <label for="delete-password">Mot de passe</label>
+            <input type="password" id="delete-password" name="password" required>
+        </p>
+        <button type="submit" class="btn" style="width:100%;background:var(--danger);color:#fff;">
+            {% icon "close" %} Supprimer définitivement mon compte
+        </button>
+    </form>
+    <p class="auth-switch"><a href="{% url 'accounts:profile' %}">← Annuler, retour à mon profil</a></p>
+</div>
+{% endblock %}

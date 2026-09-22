@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load icons %}
+
+{% block title %}Le Fil — Date With U{% endblock %}
+
+{% block content %}
+<div class="page-hero" style="--hero-image:url('https://picsum.photos/seed/dwu-feed/1600/500');">
+    <h1>{% icon "sparkles" %} Le Fil</h1>
+    <p>Publie une idée de sortie, ou trouve quelqu'un pour une sortie déjà proposée.</p>
+</div>
+
+<div class="feed-new-post-row">
+    <button type="button" class="btn btn-primary" id="feed-open-composer-btn">{% icon "plus" %} Publier une idée de sortie</button>
+</div>
+
+<div id="feed-list" class="feed-list"><p><em>Chargement...</em></p></div>
+<div id="feed-more-row" style="text-align:center;margin-top:1rem;"></div>
+{% endblock %}
+
+{% block extra_js %}
+{% load static %}
+<script src="{% static 'js/feed.js' %}"></script>
+{% endblock %}

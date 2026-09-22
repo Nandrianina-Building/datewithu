@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load icons %}
+
+{% block title %}Magazine — Date With U{% endblock %}
+{% block meta_description %}Idées de sorties, spots romantiques et bons plans pour construire le rendez-vous parfait à Madagascar.{% endblock %}
+
+{% block content %}
+<div class="page-hero" style="--hero-image:url('https://picsum.photos/seed/dwu-blog/1600/500');">
+    <h1>{% icon "sparkles" %} Le Magazine</h1>
+    <p>Idées de sorties et bons plans pour construire ton prochain rendez-vous.</p>
+</div>
+
+<div class="blog-grid">
+    {% for article in articles %}
+    <a href="{% url 'blog:detail' article.slug %}" class="blog-card">
+        {% if article.cover_image %}
+            <img src="{{ article.cover_image.url }}" alt="{{ article.title }}" loading="lazy">
+        {% else %}
+            <img src="https://picsum.photos/seed/dwu-article-{{ article.id }}/600/400" alt="{{ article.title }}" loading="lazy">
+        {% endif %}
+        <div class="blog-card-body">
+            {% if article.city %}<span class="place-chip">{{ article.city.name }}</span>{% endif %}
+            <h2>{{ article.title }}</h2>
+            <p>{{ article.excerpt }}</p>
+            <span class="blog-card-date">{{ article.published_at|date:"d F Y" }}</span>
+        </div>
+    </a>
+    {% empty %}
+        <p><em>Pas encore d'article publié.</em></p>
+    {% endfor %}
+</div>
+{% endblock %}
