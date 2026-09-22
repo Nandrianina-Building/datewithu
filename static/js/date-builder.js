@@ -276,8 +276,9 @@
     function renderSchedule(list) {
         const dateInput = document.createElement("input");
         dateInput.type = "date";
-        // Pas de date future autorisée (cf. cahier des charges).
-        dateInput.max = new Date().toISOString().slice(0, 10);
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        dateInput.min = tomorrow.toISOString().slice(0, 10);
         const timeInput = document.createElement("input");
         timeInput.type = "time";
         const submit = choiceButton("Valider", () => {

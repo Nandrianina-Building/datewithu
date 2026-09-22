@@ -127,27 +127,7 @@ class DateBuilderStartView(APIView):
 
     permission_classes = [permissions.IsAuthenticated]
 
-    #: Nombre de rendez-vous complétés simultanés autorisés pour un compte
-    #: gratuit avant de devoir passer Premium (voir apps.premium).
-    FREE_PLAN_MAX_COMPLETED_DATES = 3
-
     def post(self, request):
-        if not request.user.is_premium:
-            completed_count = DatePlan.objects.filter(
-                creator=request.user, status=DatePlan.STATUS_COMPLETED,
-            ).count()
-            if completed_count >= self.FREE_PLAN_MAX_COMPLETED_DATES:
-                return Response(
-                    {
-                        "detail": (
-                            f"Tu as déjà {completed_count} rendez-vous créés avec un compte gratuit "
-                            f"(limite : {self.FREE_PLAN_MAX_COMPLETED_DATES}). Passe Premium pour en "
-                            "créer sans limite."
-                        ),
-                        "upgrade_url": "/premium/",
-                    },
-                    status=status.HTTP_403_FORBIDDEN,
-                )
         plan = DatePlan.objects.create(creator=request.user)
         return Response(
             {
@@ -257,7 +237,11 @@ class DateBuilderStepView(APIView):
             touched_step = STEP_SCHEDULE
             if "date" in data:
                 try:
-                    plan.date_value = datetime.strptime(data["date"], "%Y-%m-%d").date()
+                    date_value = datetime.strptime(data["date"], "%Y-%m-%d").date()
+                    if date_value <= timezone.localdate():
+                        errors["date"] = "La date du rendez-vous doit être dans le futur."
+                    else:
+                        plan.date_value = date_value
                 except (ValueError, TypeError):
                     errors["date"] = "Format attendu : AAAA-MM-JJ."
             if "time" in data:
@@ -349,6 +333,12 @@ class DateBuilderCompleteView(APIView):
                     "detail": "Le rendez-vous n'est pas encore complet.",
                     "required": ["mood", "city", "budget", "date_value", "time_value", "place_ou_activity"],
                 },
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        if plan.date_value <= timezone.localdate():
+            return Response(
+                {"detail": "La date du rendez-vous doit être dans le futur."},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
