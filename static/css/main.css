@@ -1545,6 +1545,27 @@ img { max-width: 100%; display: block; }
     box-shadow: var(--shadow-sm);
 }
 
+.map-place-marker {
+    background: transparent;
+    border: 0;
+}
+
+.map-place-marker svg {
+    display: block;
+    width: 32px;
+    height: 42px;
+    overflow: visible;
+    filter: drop-shadow(0 2px 3px rgba(74, 24, 44, 0.35));
+}
+
+.map-place-marker path {
+    fill: #d94675;
+    stroke: #fff;
+    stroke-width: 2;
+}
+
+.map-place-marker circle { fill: #fff; }
+
 .place-popup h3 { font-size: 1rem; margin-bottom: 0.2rem; }
 .place-popup img { border-radius: var(--radius-sm); margin-bottom: 0.5rem; height: 100px; object-fit: cover; }
 

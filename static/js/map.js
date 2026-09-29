@@ -11,6 +11,13 @@
 
     let markersLayer = L.layerGroup().addTo(map);
     let userMarker = null;
+    const placeMarkerIcon = L.divIcon({
+        className: "map-place-marker",
+        html: '<svg viewBox="0 0 32 42" aria-hidden="true"><path d="M16 1C7.7 1 1 7.7 1 16c0 11 15 25 15 25s15-14 15-25C31 7.7 24.3 1 16 1Z"/><circle cx="16" cy="16" r="5"/></svg>',
+        iconSize: [32, 42],
+        iconAnchor: [16, 42],
+        popupAnchor: [0, -38],
+    });
 
     function escapeHtml(str) {
         const div = document.createElement("div");
@@ -41,9 +48,14 @@
             const citySelect = document.getElementById("map-filter-city");
             const categorySelect = document.getElementById("map-filter-category");
 
-            (cities.results || cities).forEach((c) => {
+            const cityList = cities.results || cities;
+            cityList.forEach((c) => {
                 citySelect.insertAdjacentHTML("beforeend", `<option value="${c.id}">${escapeHtml(c.name)}</option>`);
             });
+            const antananarivo = cityList.find(
+                (city) => city.name.trim().toLocaleLowerCase("fr") === "antananarivo",
+            );
+            if (antananarivo) citySelect.value = String(antananarivo.id);
             (categories.results || categories).forEach((c) => {
                 categorySelect.insertAdjacentHTML("beforeend", `<option value="${c.id}">${escapeHtml(c.name)}</option>`);
             });
@@ -71,7 +83,7 @@
             places.forEach((p) => {
                 const lat = parseFloat(p.latitude);
                 const lng = parseFloat(p.longitude);
-                const marker = L.marker([lat, lng]).addTo(markersLayer);
+                const marker = L.marker([lat, lng], { icon: placeMarkerIcon }).addTo(markersLayer);
                 marker.bindPopup(popupContent(p));
                 marker.on("popupopen", (e) => {
                     const btn = e.popup.getElement().querySelector(".place-detail-btn");
@@ -99,8 +111,8 @@
                 if (userMarker) map.removeLayer(userMarker);
                 userMarker = L.circleMarker([latitude, longitude], {
                     radius: 8,
-                    color: "#e0165c",
-                    fillColor: "#e0165c",
+                    color: "#d94675",
+                    fillColor: "#d94675",
                     fillOpacity: 0.6,
                 }).addTo(map).bindPopup("Toi").openPopup();
                 map.setView([latitude, longitude], 14);
@@ -109,6 +121,10 @@
         );
     });
 
-    loadFilters();
-    loadPlaces();
+    async function initializeMap() {
+        await loadFilters();
+        await loadPlaces();
+    }
+
+    initializeMap();
 })();
