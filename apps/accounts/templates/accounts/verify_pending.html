@@ -20,7 +20,10 @@
             {% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}
             <button type="submit" class="btn btn-primary">{% icon "send" %} Renvoyer l'e-mail</button>
         </form>
-        <a class="btn" href="{% url 'accounts:logout' %}">{% icon "logout" %} Se déconnecter</a>
+        <form action="{% url 'accounts:logout' %}" method="post" class="inline-form">
+            {% csrf_token %}
+            <button type="submit" class="btn">{% icon "logout" %} Se déconnecter</button>
+        </form>
     </div>
 </div>
 {% endblock %}
