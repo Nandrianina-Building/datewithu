@@ -1531,7 +1531,7 @@ img { max-width: 100%; display: block; }
     font-weight: 700;
 }
 
-.home-recommended-badge .icon { width: 14px; height: 14px; fill: #f2b942; stroke: #a66c00; }
+.home-recommended-badge .icon { width: 14px; height: 14px; color: #d99a12; fill: none; }
 
 .fav-btn:disabled { cursor: not-allowed; opacity: 0.55; }
 .fav-btn.favorite-error { color: var(--danger); }

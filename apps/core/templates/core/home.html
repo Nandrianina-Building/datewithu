@@ -138,7 +138,7 @@
                         <img src="https://picsum.photos/seed/dwu-place-{{ place.slug }}/500/400" alt="{{ place.name }}" class="place-card-media" loading="lazy">
                     {% endif %}
                     <div class="place-card-body">
-                        {% if place.is_recommended %}<span class="badge-featured home-recommended-badge">{% icon "star" %} Recommandé</span>{% endif %}
+                        {% if place.is_recommended %}<span class="badge-featured home-recommended-badge">{% icon "sparkles" %} Recommandé</span>{% endif %}
                         <h3 style="margin-bottom:0.2rem;">{{ place.name|truncatechars:40 }}</h3>
                         <p style="margin-bottom:0.4rem;font-size:0.85rem;">{{ place.city.name }}{% if place.category %} · {{ place.category.name }}{% endif %}</p>
                         {% if place.short_description %}<p style="font-size:0.88rem;">{{ place.short_description|truncatechars:90 }}</p>{% endif %}
