@@ -49,8 +49,10 @@
             if (!res.ok) {
                 throw new Error(res.status === 403 ? "Connecte-toi pour ajouter un favori." : (data.detail || "Impossible de modifier ce favori."));
             }
-            btn.textContent = data.favorited ? "\u2665" : "\u2661";
+            btn.innerHTML = window.DWU.icon("heart");
             btn.classList.toggle("favorited", data.favorited);
+            btn.setAttribute("aria-pressed", String(data.favorited));
+            btn.setAttribute("aria-label", data.favorited ? "Retirer des favoris" : "Ajouter aux favoris");
         } catch (error) {
             btn.title = error.message;
             btn.classList.add("favorite-error");
@@ -121,7 +123,7 @@
                 ${place.main_image
                     ? `<img src="${place.main_image}" alt="${escapeHtml(place.name)}" class="place-card-media">`
                     : `<img src="https://picsum.photos/seed/dwu-place-${place.id}/500/400" alt="" class="place-card-media">`}
-                <button class="fav-btn ${isFav ? "favorited" : ""}" data-id="${place.id}" ${isAuthenticated ? "" : "disabled title=\"Connecte-toi pour ajouter ce lieu à tes favoris\""}>${isFav ? "\u2665" : "\u2661"}</button>
+                <button class="fav-btn ${isFav ? "favorited" : ""}" data-id="${place.id}" aria-label="${isFav ? "Retirer des favoris" : "Ajouter aux favoris"}" aria-pressed="${isFav}" ${isAuthenticated ? "" : "disabled title=\"Connecte-toi pour ajouter ce lieu à tes favoris\""}>${window.DWU.icon("heart")}</button>
                 <div class="place-card-body">
                     <h3 style="margin-bottom:0.2rem;">${escapeHtml(place.name)}</h3>
                     <p style="margin-bottom:0.4rem;font-size:0.85rem;">${escapeHtml(place.city || "")}${place.city && place.category ? " · " : ""}${escapeHtml(place.category || "")}</p>

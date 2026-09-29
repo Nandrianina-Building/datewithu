@@ -1,5 +1,8 @@
+from datetime import datetime, time
+
 from django.conf import settings
 from django.db import models
+from django.utils import timezone
 
 from apps.activities.models import Activity
 from apps.budgets.models import Budget
@@ -130,6 +133,14 @@ class DatePlan(models.Model):
         """Champs jugés indispensables pour passer en `completed` (section 1)."""
         return all([self.mood_id, self.city_id, self.budget_id, self.date_value, self.time_value]) \
             and (self.place_id or self.activity_id)
+
+    @property
+    def has_passed(self):
+        if not self.date_value:
+            return False
+        scheduled_at = datetime.combine(self.date_value, self.time_value or time.min)
+        scheduled_at = timezone.make_aware(scheduled_at, timezone.get_current_timezone())
+        return scheduled_at <= timezone.now()
 
 
 class DatePlanPreferenceAnswer(models.Model):

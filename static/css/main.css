@@ -1254,6 +1254,10 @@ img { max-width: 100%; display: block; }
     box-shadow: var(--shadow-sm);
 }
 
+.fav-btn .icon { width: 20px; height: 20px; transition: transform 0.15s ease; }
+.fav-btn.favorited { color: #ed4956; }
+.fav-btn.favorited .icon { fill: currentColor; transform: scale(1.08); }
+
 /* --- Phase 6 : dashboard admin avancé --- */
 .admin-table {
     width: 100%;
@@ -1508,6 +1512,26 @@ img { max-width: 100%; display: block; }
     font-size: 0.75rem;
     margin-bottom: 0.4rem;
 }
+
+.home-recommended-badge {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin: 0;
+    padding: 0.4rem 0.65rem;
+    border: 1px solid rgba(173, 36, 83, 0.22);
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.96);
+    color: #ad2453;
+    box-shadow: 0 3px 12px rgba(31, 16, 24, 0.16);
+    font-size: 0.72rem;
+    font-weight: 700;
+}
+
+.home-recommended-badge .icon { width: 14px; height: 14px; fill: #f2b942; stroke: #a66c00; }
 
 .fav-btn:disabled { cursor: not-allowed; opacity: 0.55; }
 .fav-btn.favorite-error { color: var(--danger); }
@@ -2866,6 +2890,8 @@ a.chat-partner-link:hover h1 { text-decoration: underline; }
 }
 .mydate-meta .icon { width: 14px; height: 14px; flex-shrink: 0; }
 .mydate-meta a { color: var(--rose-700, #c2185b); font-weight: 600; }
+.mydate-past-label { display: flex; align-items: center; gap: 0.35rem; color: #68706d; font-size: 0.82rem; font-weight: 700; }
+.mydate-past-label .icon { width: 15px; height: 15px; }
 
 .mydate-actions {
     display: flex;

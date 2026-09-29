@@ -118,8 +118,8 @@
                     ${!past ? `
                         <div class="invite-chips">${planChips(plan)}</div>
                         ${plan.personal_message ? `<blockquote class="invite-message">${escapeHtml(plan.personal_message)}</blockquote>` : ""}
-                    ` : `<p><em>Ce rendez-vous est passé.</em></p>`}
-                    ${canChat ? `<a class="btn btn-primary invite-cta" href="/invite/${token}/chat/">${ICONS.chat} Discuter</a>` : ""}
+                    ` : `<p class="mydate-past-label">${ICONS.clock} Date déjà passée</p>`}
+                    ${canChat && !past ? `<a class="btn btn-primary invite-cta" href="/invite/${token}/chat/">${ICONS.chat} Discuter</a>` : ""}
                 </div>
             </div>
         `;

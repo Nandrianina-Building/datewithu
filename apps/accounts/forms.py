@@ -40,6 +40,12 @@ class RegisterForm(UserCreationForm):
             raise forms.ValidationError("Inscription invalide.")
         return value
 
+    def clean_email(self):
+        email = self.cleaned_data["email"].strip()
+        if User.objects.filter(email__iexact=email).exists():
+            raise forms.ValidationError("Cette adresse e-mail est déjà utilisée. Connecte-toi ou utilise une autre adresse.")
+        return email
+
     def save(self, commit=True):
         from django.utils import timezone
 
@@ -64,6 +70,12 @@ class ProfileForm(forms.ModelForm):
             ),
             "bio": forms.Textarea(attrs={"rows": 3}),
         }
+
+    def clean_email(self):
+        email = self.cleaned_data["email"].strip()
+        if User.objects.filter(email__iexact=email).exclude(pk=self.instance.pk).exists():
+            raise forms.ValidationError("Cette adresse e-mail est déjà utilisée par un autre compte.")
+        return email
 
     def clean_birth_date(self):
         return _no_future_date(self.cleaned_data.get("birth_date"), "La date de naissance")

@@ -40,6 +40,10 @@
         }
     }
 
+    function hasPassed(dateValue, timeValue) {
+        return Boolean(dateValue) && new Date(`${dateValue}T${timeValue || "00:00:00"}`) < new Date();
+    }
+
     function coverImage(item) {
         return item.place_image || item.activity_image
             || `https://picsum.photos/seed/dwu-date-${item.plan_id}/600/400`;
@@ -52,6 +56,7 @@
 
     function proposedCard(item) {
         const where = item.place || item.activity || item.city || "Rendez-vous";
+        const past = hasPassed(item.date_value, item.time_value);
         const card = document.createElement("div");
         card.className = "mydate-card";
         card.innerHTML = `
@@ -62,9 +67,10 @@
                 <h3>${escapeHtml(window.DWU.truncate(where, 42))}</h3>
                 <p class="mydate-meta">${icon("map-pin")} ${escapeHtml(item.city || "")}</p>
                 <p class="mydate-meta">${icon("clock")} ${formatDate(item.date_value, item.time_value)}</p>
+                ${past ? `<p class="mydate-past-label">${icon("check-circle")} Déjà passé</p>` : ""}
                 <div class="mydate-actions">
                     ${item.invitation_token ? `<button type="button" class="btn btn-primary" data-share="${item.invitation_token}">${icon("qrcode")} Lien / QR</button>` : ""}
-                    <a class="btn" href="/dates/${item.plan_id}/chat/">${icon("message-circle")} Discuter</a>
+                    ${!past ? `<a class="btn" href="/dates/${item.plan_id}/chat/">${icon("message-circle")} Discuter</a>` : ""}
                     ${item.date_value ? `<a class="btn" href="/dates/${item.plan_id}/calendrier.ics">${icon("clock")} Calendrier</a>` : ""}
                 </div>
             </div>
@@ -74,7 +80,8 @@
 
     function receivedCard(item) {
         const where = item.place || item.activity || item.city || "Rendez-vous";
-        const canChat = item.invitation_status === "accepted" || item.invitation_status === "maybe";
+        const past = hasPassed(item.date_value, item.time_value);
+        const canChat = !past && (item.invitation_status === "accepted" || item.invitation_status === "maybe");
         const needsResponse = item.invitation_status === "pending" || item.invitation_status === "viewed";
         const card = document.createElement("div");
         card.className = "mydate-card";
@@ -87,6 +94,7 @@
                 <p class="mydate-meta">${icon("user")} Proposé par <a href="/accounts/u/${item.creator_id}/">${escapeHtml(window.DWU.truncate(item.creator_name, 24))}</a></p>
                 <p class="mydate-meta">${icon("map-pin")} ${escapeHtml(item.city || "")}</p>
                 <p class="mydate-meta">${icon("clock")} ${formatDate(item.date_value, item.time_value)}</p>
+                ${past ? `<p class="mydate-past-label">${icon("check-circle")} Déjà passé</p>` : ""}
                 <div class="mydate-actions">
                     ${needsResponse ? `<a class="btn btn-primary" href="/invite/${item.invitation_token}/">${icon("heart")} Répondre</a>` : ""}
                     ${canChat ? `<a class="btn" href="/invite/${item.invitation_token}/chat/">${icon("message-circle")} Discuter</a>` : ""}

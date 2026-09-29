@@ -181,6 +181,9 @@ def chat_view(request, plan_id):
     from apps.planner.models import DatePlan
 
     plan = get_object_or_404(DatePlan, pk=plan_id, creator=request.user)
+    if plan.has_passed:
+        messages.info(request, "Ce rendez-vous est déjà passé. La discussion est fermée.")
+        return redirect("core:my_dates")
     return render(request, "core/chat.html", {
         "date_plan_id": plan.id,
         "token": "",
@@ -200,6 +203,9 @@ def chat_public_view(request, token):
     from apps.invitations.models import Invitation
 
     invitation = get_object_or_404(Invitation, token=token)
+    if invitation.date_plan.has_passed:
+        messages.info(request, "Ce rendez-vous est déjà passé. La discussion est fermée.")
+        return redirect("core:my_dates")
     return render(request, "core/chat.html", {
         "date_plan_id": invitation.date_plan_id,
         "token": str(invitation.token),

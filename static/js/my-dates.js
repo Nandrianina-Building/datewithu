@@ -83,6 +83,7 @@
             list.innerHTML = dates.map((d) => {
                 const where = d.place || d.activity || d.city || "Rendez-vous";
                 const when = d.date_value ? `${d.date_value}${d.time_value ? " à " + d.time_value.slice(0, 5) : ""}` : "";
+                const past = d.date_value && new Date(`${d.date_value}T${d.time_value || "00:00:00"}`) < new Date();
                 const statusKey = d.invitation_status;
                 const statusLabel = statusKey ? (STATUS_LABELS[statusKey] || statusKey) : "Brouillon d'invitation";
                 const statusIcon = icon(statusKey ? (STATUS_ICONS[statusKey] || "clock") : "clock");
@@ -91,11 +92,12 @@
                         <div class="my-date-info">
                             <strong>${escapeHtml(truncate(where, 50))}</strong>
                             <span class="my-date-meta">${escapeHtml(when)}</span>
+                            ${past ? `<span class="my-date-status">${icon("check-circle")} Déjà passé</span>` : ""}
                             <span class="my-date-status">${statusIcon} ${statusLabel}</span>
                         </div>
                         <div class="my-date-actions">
                             ${d.invitation_token ? `<button type="button" class="link-btn" data-share="${d.invitation_token}">${icon("qrcode")} Lien / QR</button>` : ""}
-                            <a href="/dates/${d.plan_id}/chat/">${icon("message-circle")} Discuter</a>
+                            ${!past ? `<a href="/dates/${d.plan_id}/chat/">${icon("message-circle")} Discuter</a>` : ""}
                         </div>
                     </li>
                 `;

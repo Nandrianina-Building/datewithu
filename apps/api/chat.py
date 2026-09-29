@@ -51,6 +51,11 @@ class ChatMessagesView(APIView):
         is_creator, label = _resolve_viewer(request, plan)
         if is_creator is None:
             return Response({"detail": "Accès non autorisé à cette conversation."}, status=status.HTTP_403_FORBIDDEN)
+        if plan.has_passed:
+            return Response(
+                {"detail": "Ce rendez-vous est déjà passé. La discussion est fermée."},
+                status=status.HTTP_403_FORBIDDEN,
+            )
 
         conversation, _ = Conversation.objects.get_or_create(date_plan=plan)
 
@@ -103,6 +108,11 @@ class ChatMessagesView(APIView):
         is_creator, label = _resolve_viewer(request, plan)
         if is_creator is None:
             return Response({"detail": "Accès non autorisé à cette conversation."}, status=status.HTTP_403_FORBIDDEN)
+        if plan.has_passed:
+            return Response(
+                {"detail": "Ce rendez-vous est déjà passé. La discussion est fermée."},
+                status=status.HTTP_403_FORBIDDEN,
+            )
 
         from apps.safety.models import Block
         invitation = getattr(plan, "invitation", None)
