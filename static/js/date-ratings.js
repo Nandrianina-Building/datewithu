@@ -45,8 +45,11 @@
             const res = await fetch("/api/date-ratings/pending/");
             const items = await res.json();
             if (items.length) renderPrompt(items[0]);
+            else banner.innerHTML = "";
         } catch (e) {
-            // silencieux
+            banner.innerHTML = "";
+        } finally {
+            if (banner.querySelector(".skeleton-bar")) banner.innerHTML = "";
         }
     }
 

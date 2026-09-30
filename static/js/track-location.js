@@ -8,9 +8,14 @@
 
     function initMap(lat, lng) {
         map = L.map("track-map").setView([lat, lng], 15);
-        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        const tiles = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
             attribution: "&copy; OpenStreetMap",
         }).addTo(map);
+        const mapSkeleton = document.getElementById("track-map-skeleton");
+        const dismissMapSkeleton = () => mapSkeleton?.remove();
+        tiles.once("load", dismissMapSkeleton);
+        tiles.once("tileerror", dismissMapSkeleton);
+        setTimeout(dismissMapSkeleton, 12000);
         marker = L.marker([lat, lng]).addTo(map);
     }
 
@@ -27,6 +32,8 @@
             const res = await fetch(`/api/safeshare/${token}/`);
             if (!res.ok) {
                 subtitle.textContent = "Ce lien de suivi n'existe pas ou plus.";
+                statusBox.innerHTML = "";
+                document.querySelector(".map-loading-frame--track")?.remove();
                 return;
             }
             const data = await res.json();

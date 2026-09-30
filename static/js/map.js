@@ -4,10 +4,15 @@
     // Centré sur Antananarivo par défaut — ajuste selon ta ville principale.
     const map = L.map("places-map").setView([-18.8792, 47.5079], 12);
 
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    const tiles = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: "&copy; contributeurs OpenStreetMap",
         maxZoom: 19,
     }).addTo(map);
+    const mapSkeleton = document.getElementById("places-map-skeleton");
+    const dismissMapSkeleton = () => mapSkeleton?.remove();
+    tiles.once("load", dismissMapSkeleton);
+    tiles.once("tileerror", dismissMapSkeleton);
+    setTimeout(dismissMapSkeleton, 12000);
 
     let markersLayer = L.layerGroup().addTo(map);
     let userMarker = null;

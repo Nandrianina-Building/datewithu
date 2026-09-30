@@ -19,11 +19,19 @@
     <button type="button" id="map-locate-btn">{% icon "compass" %} Me localiser</button>
 </div>
 
-<div id="places-map" class="places-map"></div>
+<div class="map-loading-frame">
+    <div id="places-map" class="places-map">
+        <div id="places-map-skeleton" class="skeleton-map" aria-label="Chargement de la carte">
+            <span class="skeleton-bar skeleton-bar--medium" aria-hidden="true"></span>
+            <span class="skeleton-bar skeleton-bar--long" aria-hidden="true"></span>
+            <span class="skeleton-bar skeleton-bar--short" aria-hidden="true"></span>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block extra_js %}
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="{% static 'js/place-detail.js' %}"></script>
-<script src="{% static 'js/map.js' %}"></script>
+<script src="{% static 'js/place-detail.js' %}?v=2"></script>
+<script src="{% static 'js/map.js' %}?v=2"></script>
 {% endblock %}

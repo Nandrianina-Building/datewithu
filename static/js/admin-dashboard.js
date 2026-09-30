@@ -206,12 +206,15 @@
     async function loadSettings() {
         try {
             const res = await fetch("/api/admin/settings/");
+            if (!res.ok) throw new Error("settings unavailable");
             const data = await res.json();
             document.querySelectorAll("[data-setting]").forEach((input) => {
                 input.checked = !!data[input.dataset.setting];
             });
+            document.getElementById("admin-settings-loading")?.remove();
         } catch (e) {
-            // silencieux : les interrupteurs restent sur leur état par défaut
+            const loading = document.getElementById("admin-settings-loading");
+            if (loading) loading.innerHTML = "<p role=\"alert\">Impossible de charger les paramètres.</p>";
         }
     }
 

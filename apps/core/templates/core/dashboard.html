@@ -43,7 +43,10 @@
     </a>
 </div>
 
-<div id="pending-ratings-banner"></div>
+<div id="pending-ratings-banner" class="pending-ratings-skeleton skeleton-stack" aria-label="Chargement des évaluations">
+    <span class="skeleton-bar skeleton-bar--medium" aria-hidden="true"></span>
+    <span class="skeleton-bar skeleton-bar--long" aria-hidden="true"></span>
+</div>
 
 <div class="dash-panels">
     <section class="dash-panel" id="my-dates-card">
@@ -93,9 +96,9 @@
 
 {% block extra_js %}
 {% load static %}
-<script src="{% static 'js/date-ratings.js' %}"></script>
+<script src="{% static 'js/date-ratings.js' %}?v=2"></script>
 <script src="{% static 'js/invite-share.js' %}"></script>
-<script src="{% static 'js/my-dates.js' %}?v=2"></script>
+<script src="{% static 'js/my-dates.js' %}?v=3"></script>
 <script src="{% static 'js/favorites.js' %}?v=2"></script>
 <script src="{% static 'js/notifications.js' %}?v=2"></script>
 <script src="{% static 'js/surprise.js' %}?v=2"></script>
