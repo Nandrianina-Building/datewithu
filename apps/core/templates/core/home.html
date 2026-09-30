@@ -115,11 +115,6 @@
                 </a>
             {% endfor %}
         </div>
-        {% if cities_has_more %}
-            <div style="text-align:center;margin-top:1.2rem;">
-                <button type="button" id="cities-more-btn" class="btn" data-page="1">Voir plus de villes</button>
-            </div>
-        {% endif %}
     </section>
     {% endif %}
 
@@ -163,6 +158,4 @@
 {% endblock %}
 
 {% block extra_js %}
-{% load static %}
-<script src="{% static 'js/home-cities.js' %}?v=2"></script>
 {% endblock %}

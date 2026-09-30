@@ -73,11 +73,13 @@
 
     async function load() {
         const list = document.getElementById("my-dates-list");
+        const moreButton = document.getElementById("my-dates-more");
         try {
             const res = await fetch("/api/my-dates/");
             const dates = await res.json();
             if (!dates.length) {
                 list.innerHTML = "<li><em>Aucun rendez-vous créé pour l'instant.</em></li>";
+                moreButton.hidden = true;
                 return;
             }
             list.innerHTML = dates.map((d) => {
@@ -102,11 +104,21 @@
                     </li>
                 `;
             }).join("");
+            const extraItems = Array.from(list.children).slice(3);
+            extraItems.forEach((item) => { item.hidden = true; });
+            moreButton.hidden = extraItems.length === 0;
+            moreButton.addEventListener("click", () => {
+                const expanded = moreButton.getAttribute("aria-expanded") === "true";
+                extraItems.forEach((item) => { item.hidden = expanded; });
+                moreButton.setAttribute("aria-expanded", String(!expanded));
+                moreButton.textContent = expanded ? "Voir plus" : "Voir moins";
+            });
             list.querySelectorAll("[data-share]").forEach((btn) => {
                 btn.addEventListener("click", () => openShare(btn.dataset.share));
             });
         } catch (e) {
             list.innerHTML = "<li><em>Impossible de charger tes rendez-vous.</em></li>";
+            moreButton.hidden = true;
         }
     }
 

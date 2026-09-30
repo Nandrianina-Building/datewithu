@@ -127,9 +127,9 @@
                 <div class="place-card-body">
                     <h3 style="margin-bottom:0.2rem;">${escapeHtml(place.name)}</h3>
                     <p style="margin-bottom:0.4rem;font-size:0.85rem;">${escapeHtml(place.city || "")}${place.city && place.category ? " · " : ""}${escapeHtml(place.category || "")}</p>
-                    <p style="font-size:0.88rem;">${escapeHtml(truncate(place.short_description, 90))}</p>
+                    <p class="place-card-description" style="font-size:0.88rem;">${escapeHtml(truncate(place.short_description, 90))}</p>
                     <p style="font-size:0.85rem;">${place.rating ? `★ ${place.rating}` : "Pas encore noté"}</p>
-                    <button class="btn btn-primary place-detail-btn" style="width:100%;margin-top:0.4rem;" data-id="${place.id}">Voir détails</button>
+                    <button class="btn btn-primary place-detail-btn" style="width:100%;" data-id="${place.id}">Voir détails</button>
                 </div>
             `;
             card.querySelector(".fav-btn").addEventListener("click", (e) => {
@@ -150,9 +150,9 @@
         if (!places.next && !places.previous) return; // une seule page : rien à afficher
         const totalPages = places.count ? Math.ceil(places.count / 10) : currentPage;
         pagination.innerHTML = `
-            <button type="button" class="btn" id="explore-prev" ${places.previous ? "" : "disabled"}>← Précédent</button>
+            <button type="button" class="btn" id="explore-prev" aria-label="Page précédente" ${places.previous ? "" : "disabled"}>${window.DWU.icon("chevron-left", "explore-pagination-icon")}<span class="explore-pagination-label">Précédent</span></button>
             <span class="explore-pagination-status">Page ${currentPage} / ${totalPages}</span>
-            <button type="button" class="btn" id="explore-next" ${places.next ? "" : "disabled"}>Suivant →</button>
+            <button type="button" class="btn" id="explore-next" aria-label="Page suivante" ${places.next ? "" : "disabled"}><span class="explore-pagination-label">Suivant</span>${window.DWU.icon("chevron-right", "explore-pagination-icon")}</button>
         `;
         // On ne touche à AUCUN champ de recherche/filtre ici : `load()` les
         // relit tels quels depuis le DOM, donc Suivant/Précédent ne changent

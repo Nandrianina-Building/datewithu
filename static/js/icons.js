@@ -13,6 +13,8 @@ window.DWU = window.DWU || {};
     "use strict";
 
     const PATHS = {
+        "chevron-left": '<path d="m15 18-6-6 6-6"/>',
+        "chevron-right": '<path d="m9 18 6-6-6-6"/>',
         copy: '<rect x="9" y="9" width="12" height="12" rx="1.5"/><path d="M6 15H4.5A1.5 1.5 0 0 1 3 13.5v-9A1.5 1.5 0 0 1 4.5 3h9A1.5 1.5 0 0 1 15 4.5V6"/>',
         eye: '<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>',
         "x-circle": '<circle cx="12" cy="12" r="9"/><path d="m9 9 6 6M15 9l-6 6"/>',

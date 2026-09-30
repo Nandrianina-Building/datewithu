@@ -76,8 +76,6 @@ def home_view(request):
 
     config = SiteConfiguration.load()
     cities = City.objects.filter(is_active=True).order_by("display_order", "name")
-    cities_total = cities.count()
-    cities = cities[:12]
     popular_places = (
         Place.objects.filter(is_active=True)
         .select_related("city", "category")
@@ -86,7 +84,7 @@ def home_view(request):
     return render(
         request,
         "core/home.html",
-        {"config": config, "cities": cities, "cities_has_more": cities_total > len(cities), "popular_places": popular_places},
+        {"config": config, "cities": cities, "popular_places": popular_places},
     )
 
 
@@ -666,14 +664,14 @@ def recommendations_api_view(request):
         qs = qs.filter(city_id=top_city_id)
     if top_mood_id:
         qs = qs.filter(activities__compatible_moods=top_mood_id)
-    places = qs.select_related("city", "category").order_by("-rating").distinct()[:4]
+    places = qs.select_related("city", "category").order_by("-rating").distinct()
 
     if not places:
         # Pas assez d'historique : on retombe sur les lieux les mieux notés,
         # tous critères confondus, plutôt que de ne rien montrer.
         places = Place.objects.filter(is_active=True).exclude(
             id__in=used_place_ids,
-        ).order_by("-rating")[:4]
+        ).order_by("-rating")
 
     data = [{
         "id": p.id,

@@ -10,7 +10,7 @@
 <div class="dash-greeting">
     <div>
         <span class="dash-greeting-eyebrow">{% icon "sparkles" %} Ton espace</span>
-        <h1>Bonjour {{ user.first_name|default:user.username }}</h1>
+        <h1><span id="dashboard-greeting-word">Bonjour</span> {{ user.first_name|default:user.username }}</h1>
         <p>Prêt·e pour ton prochain rendez-vous ?</p>
     </div>
     <a href="{% url 'core:date_builder' %}" class="btn btn-primary dash-greeting-cta">{% icon "sparkles" %} Nouveau rendez-vous</a>
@@ -60,6 +60,7 @@
             <li class="skeleton-list-item" aria-hidden="true"><span class="skeleton-bar skeleton-bar--medium"></span><span class="skeleton-bar skeleton-bar--short"></span></li>
             <li class="skeleton-list-item" aria-hidden="true"><span class="skeleton-bar skeleton-bar--long"></span><span class="skeleton-bar skeleton-bar--short"></span></li>
         </ul>
+        <button type="button" id="my-dates-more" class="dashboard-list-more" aria-expanded="false" hidden>Voir plus</button>
     </section>
     <section class="dash-panel" id="favorites-card">
         <header class="dash-panel-head">
@@ -71,17 +72,6 @@
             <li class="skeleton-list-item" aria-hidden="true"><span class="skeleton-bar skeleton-bar--medium"></span></li>
             <li class="skeleton-list-item" aria-hidden="true"><span class="skeleton-bar skeleton-bar--long"></span></li>
             <li class="skeleton-list-item" aria-hidden="true"><span class="skeleton-bar skeleton-bar--short"></span></li>
-        </ul>
-    </section>
-    <section class="dash-panel" id="notifications-card">
-        <header class="dash-panel-head">
-            <span class="dash-panel-icon">{% icon "bell" %}</span>
-            <h2>Notifications</h2>
-            <a href="{% url 'core:notifications' %}" class="dash-panel-more">Tout voir</a>
-        </header>
-        <ul id="notifications-list" class="dash-panel-list" aria-label="Notifications récentes">
-            <li class="skeleton-list-item" aria-hidden="true"><span class="skeleton-bar skeleton-bar--long"></span></li>
-            <li class="skeleton-list-item" aria-hidden="true"><span class="skeleton-bar skeleton-bar--medium"></span></li>
         </ul>
     </section>
 </div>
@@ -96,11 +86,12 @@
 
 {% block extra_js %}
 {% load static %}
+<script src="{% static 'js/dashboard-greeting.js' %}"></script>
 <script src="{% static 'js/date-ratings.js' %}?v=2"></script>
 <script src="{% static 'js/invite-share.js' %}"></script>
 <script src="{% static 'js/my-dates.js' %}?v=3"></script>
+<script src="{% static 'js/place-detail.js' %}?v=2"></script>
 <script src="{% static 'js/favorites.js' %}?v=2"></script>
-<script src="{% static 'js/notifications.js' %}?v=2"></script>
 <script src="{% static 'js/surprise.js' %}?v=2"></script>
-<script src="{% static 'js/recommendations.js' %}"></script>
+<script src="{% static 'js/recommendations.js' %}?v=2"></script>
 {% endblock %}

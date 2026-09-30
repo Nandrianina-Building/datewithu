@@ -30,6 +30,46 @@ window.DWU = window.DWU || {};
         return `${place.price_min || place.price_max} MGA`;
     }
 
+    function formatOpeningHours(openingHours) {
+        if (typeof openingHours === "string") return openingHours;
+        if (Array.isArray(openingHours)) return openingHours.map(formatOpeningHours).filter(Boolean).join(", ");
+        if (!openingHours || typeof openingHours !== "object") return "";
+
+        const dayLabels = {
+            mon: "Lundi", monday: "Lundi", tue: "Mardi", tuesday: "Mardi",
+            wed: "Mercredi", wednesday: "Mercredi", thu: "Jeudi", thursday: "Jeudi",
+            fri: "Vendredi", friday: "Vendredi", sat: "Samedi", saturday: "Samedi",
+            sun: "Dimanche", sunday: "Dimanche",
+        };
+        const timeLabels = {
+            open: "Ouverture", opening: "Ouverture", start: "Ouverture", from: "Ouverture",
+            close: "Fermeture", closing: "Fermeture", end: "Fermeture", to: "Fermeture",
+        };
+
+        function formatValue(value) {
+            if (typeof value === "string" || typeof value === "number") return String(value);
+            if (Array.isArray(value)) return value.map(formatValue).filter(Boolean).join(", ");
+            if (!value || typeof value !== "object") return "Fermé";
+
+            const entries = Object.entries(value);
+            const opening = entries.find(([key]) => ["open", "opening", "start", "from"].includes(key.toLowerCase()));
+            const closing = entries.find(([key]) => ["close", "closing", "end", "to"].includes(key.toLowerCase()));
+            if (opening || closing) {
+                return [opening?.[1], closing?.[1]].filter(Boolean).map(String).join(" - ");
+            }
+
+            return entries.map(([key, nestedValue]) => {
+                const label = timeLabels[key.toLowerCase()] || key;
+                return `${label}: ${formatValue(nestedValue)}`;
+            }).join(", ");
+        }
+
+        return Object.entries(openingHours).map(([day, value]) => {
+            const label = dayLabels[day.toLowerCase()] || day;
+            return `${label}: ${formatValue(value)}`;
+        }).join(" · ");
+    }
+
     async function loadReviews(placeId, panel) {
         panel.innerHTML = `<div class="skeleton-stack" aria-hidden="true"><span class="skeleton-bar skeleton-bar--long"></span><span class="skeleton-bar skeleton-bar--medium"></span><span class="skeleton-bar skeleton-bar--short"></span></div>`;
         try {
@@ -138,7 +178,7 @@ window.DWU = window.DWU || {};
 
                     <div class="place-info-grid">
                         ${place.address ? `<div class="place-info-item"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s7-6.1 7-12a7 7 0 1 0-14 0c0 5.9 7 12 7 12Z"/><circle cx="12" cy="9" r="2.5"/></svg><span>${escapeHtml(place.address)}${place.neighborhood ? `, ${escapeHtml(place.neighborhood)}` : ""}</span></div>` : ""}
-                        ${place.opening_hours ? `<div class="place-info-item"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg><span>${escapeHtml(place.opening_hours)}</span></div>` : ""}
+                        ${place.opening_hours ? `<div class="place-info-item"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg><span>${escapeHtml(formatOpeningHours(place.opening_hours))}</span></div>` : ""}
                         ${place.phone ? `<div class="place-info-item"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.4c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.2 1L6.6 10.8Z"/></svg><a href="tel:${escapeHtml(place.phone)}">${escapeHtml(place.phone)}</a></div>` : ""}
                         ${price ? `<div class="place-info-item"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.5 9.5c0-1 .8-2 2.5-2s2.5.9 2.5 2c0 2.5-5 1.8-5 4.3 0 1.1 1 2.2 2.5 2.2s2.5-1 2.5-2"/></svg><span>${price}</span></div>` : ""}
                         ${place.website ? `<div class="place-info-item"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.5 2.5 4 5.8 4 9s-1.5 6.5-4 9c-2.5-2.5-4-5.8-4-9s1.5-6.5 4-9Z"/></svg><a href="${escapeHtml(place.website)}" target="_blank" rel="noopener">Site web</a></div>` : ""}

@@ -29,11 +29,14 @@
                         <p class="mydate-meta">${icon("map-pin")} ${escapeHtml(p.city || "")}${p.category ? ` · ${escapeHtml(p.category)}` : ""}</p>
                         <p class="mydate-meta">★ ${p.rating}/5</p>
                         <div class="mydate-actions">
-                            <a class="btn btn-primary" href="/explore/">${icon("eye")} Découvrir</a>
+                            <button type="button" class="btn btn-primary recommendation-detail-btn" data-place-id="${p.id}">${icon("eye")} Détails</button>
                         </div>
                     </div>
                 </div>
             `).join("");
+            grid.querySelectorAll(".recommendation-detail-btn").forEach((button) => {
+                button.addEventListener("click", () => window.DWU.openPlaceDetail(Number(button.dataset.placeId)));
+            });
         } catch (e) {
             grid.innerHTML = "<p><em>Impossible de charger les recommandations.</em></p>";
         }
