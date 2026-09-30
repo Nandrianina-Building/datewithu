@@ -31,7 +31,7 @@ window.DWU = window.DWU || {};
     }
 
     async function loadReviews(placeId, panel) {
-        panel.innerHTML = "<p><em>Chargement des avis...</em></p>";
+        panel.innerHTML = `<div class="skeleton-stack" aria-hidden="true"><span class="skeleton-bar skeleton-bar--long"></span><span class="skeleton-bar skeleton-bar--medium"></span><span class="skeleton-bar skeleton-bar--short"></span></div>`;
         try {
             const res = await fetch(`/api/places/${placeId}/reviews/`);
             if (!res.ok) throw new Error("reviews unavailable");
@@ -96,7 +96,7 @@ window.DWU = window.DWU || {};
         const overlay = document.createElement("div");
         overlay.className = "modal-overlay";
         overlay.id = "dwu-modal-overlay";
-        overlay.innerHTML = `<div class="modal-panel"><p style="padding:2rem;text-align:center;"><em>Chargement...</em></p></div>`;
+        overlay.innerHTML = `<div class="modal-panel"><div class="skeleton-stack" aria-hidden="true" style="padding:2rem;"><span class="skeleton-bar skeleton-bar--long"></span><span class="skeleton-bar skeleton-bar--medium"></span><span class="skeleton-bar skeleton-bar--short"></span></div></div>`;
         overlay.addEventListener("click", (e) => {
             if (e.target === overlay) closeModal();
         });

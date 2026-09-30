@@ -130,12 +130,19 @@
         if (loading || !hasMore) return;
         loading = true;
         const sentinel = ensureSentinel();
-        sentinel.querySelector("#notif-load-more-btn").textContent = "Chargement...";
+        const loadingRow = document.createElement("li");
+        loadingRow.className = "skeleton-notification";
+        loadingRow.setAttribute("aria-hidden", "true");
+        loadingRow.innerHTML = `<span class="skeleton-avatar"></span><span class="skeleton-stack"><span class="skeleton-bar skeleton-bar--long"></span><span class="skeleton-bar skeleton-bar--medium"></span></span>`;
+        list.insertBefore(loadingRow, sentinel);
 
         try {
             currentPage += 1;
             const res = await fetch(`/api/notifications/?page=${currentPage}`);
             const data = await res.json();
+            if (currentPage === 1) {
+                list.querySelectorAll(".skeleton-notification").forEach((row) => row.remove());
+            }
 
             if (currentPage === 1 && !data.results.length) {
                 list.innerHTML = "<li><em>Aucune notification pour l'instant.</em></li>";
@@ -156,6 +163,7 @@
                 list.innerHTML = "<li><em>Impossible de charger tes notifications.</em></li>";
             }
         } finally {
+            loadingRow.remove();
             loading = false;
         }
     }

@@ -13,7 +13,11 @@
     <div id="date-builder" data-start-url="{% url 'core:home' %}" data-today="{{ date_builder_today }}">
         {% csrf_token %}
         <div id="db-progress" class="db-progress"></div>
-        <div id="db-step" class="db-step">Chargement...</div>
+        <div id="db-step" class="db-step skeleton-step" aria-label="Chargement du constructeur">
+            <span class="skeleton-bar skeleton-bar--short" aria-hidden="true"></span>
+            <span class="skeleton-bar skeleton-bar--long" aria-hidden="true"></span>
+            <span class="skeleton-bar skeleton-bar--medium" aria-hidden="true"></span>
+        </div>
         <div id="db-error" class="db-error"></div>
     </div>
     <div class="db-step-visual">

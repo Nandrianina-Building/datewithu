@@ -2133,7 +2133,8 @@ img { max-width: 100%; display: block; }
     gap: 1rem;
     flex-wrap: wrap;
     background: var(--gradient-brand);
-    border-radius: var(--radius-lg);
+    border-radius: 8px;
+    border-left: 5px solid #f3c65d;
     padding: 1.6rem 1.8rem;
     color: #fff;
     margin-bottom: 1.4rem;
@@ -2196,18 +2197,24 @@ img { max-width: 100%; display: block; }
 
 .dash-panels {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
-    gap: 1.1rem;
+    grid-template-columns: minmax(0, 1.35fr) minmax(260px, 0.85fr);
+    grid-template-rows: auto auto;
+    column-gap: clamp(1.5rem, 4vw, 3.5rem);
+    row-gap: 0.4rem;
     margin-top: 0.8rem;
 }
 .dash-panel {
     min-width: 0;
-    background: var(--card);
-    border: 1px solid var(--border-soft);
-    border-radius: var(--radius);
-    padding: 1.2rem;
-    box-shadow: var(--shadow-sm);
+    background: transparent;
+    border: 0;
+    border-top: 2px solid var(--border);
+    border-radius: 0;
+    padding: 1rem 0;
+    box-shadow: none;
 }
+#my-dates-card { grid-row: span 2; border-top-color: var(--rose-600); }
+#favorites-card { border-top-color: #38856f; }
+#notifications-card { border-top-color: #c38a24; }
 .dash-panel-head {
     display: flex;
     align-items: center;
@@ -2222,6 +2229,8 @@ img { max-width: 100%; display: block; }
     display: flex; align-items: center; justify-content: center;
     flex-shrink: 0;
 }
+#favorites-card .dash-panel-icon { background: #e6f2ec; color: #28715e; }
+#notifications-card .dash-panel-icon { background: #fff2d8; color: #8f6418; }
 .dash-panel-head h2 { margin: 0; font-size: 0.98rem; flex: 1; min-width: 0; }
 .dash-panel-more { font-size: 0.78rem; font-weight: 600; color: var(--rose-600); text-decoration: none; white-space: nowrap; }
 .dash-panel-more:hover { text-decoration: underline; }
@@ -2847,7 +2856,82 @@ a.chat-partner-link:hover h1 { text-decoration: underline; }
     .dash-panels,
     .dash-section-title { max-width: 100%; }
 
-    .dash-panels { grid-template-columns: minmax(0, 1fr); }
+    .dash-panels { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto; }
+    #my-dates-card { grid-row: auto; }
+}
+
+/* --- Skeleton loading pour les vues alimentées par l'API ------------- */
+.skeleton-bar,
+.skeleton-cover,
+.skeleton-avatar {
+    display: block;
+    background: linear-gradient(100deg, var(--border-soft) 25%, var(--card) 42%, var(--border-soft) 62%);
+    background-size: 220% 100%;
+    animation: skeleton-shimmer 1.35s ease-in-out infinite;
+}
+
+.skeleton-bar { height: 0.72rem; border-radius: 4px; }
+.skeleton-bar--long { width: 88%; }
+.skeleton-bar--medium { width: 66%; }
+.skeleton-bar--short { width: 42%; }
+.skeleton-stack { display: flex; flex: 1; flex-direction: column; gap: 0.65rem; }
+.skeleton-admin { display: flex; min-height: 100px; flex-direction: column; justify-content: center; gap: 0.8rem; padding: 1rem; border: 1px solid var(--border-soft); border-radius: 6px; }
+.skeleton-cover { height: 132px; border-radius: 6px 6px 0 0; }
+.skeleton-avatar { width: 42px; height: 42px; flex: none; border-radius: 50%; }
+.skeleton-date-card { display: flex; min-width: 0; flex-direction: column; gap: 0.85rem; overflow: hidden; padding-bottom: 1rem; }
+.skeleton-date-card .skeleton-bar { margin-inline: 1rem; }
+.skeleton-list-item { display: flex; min-height: 2.6rem; flex-direction: column; justify-content: center; gap: 0.5rem; }
+.skeleton-list-item .skeleton-bar { flex: none; }
+.btn[aria-busy="true"] { min-width: 190px; justify-content: center; }
+.skeleton-notification { display: flex; align-items: center; gap: 0.9rem; padding: 1rem 1.1rem; margin-bottom: 0.6rem; }
+.skeleton-invitation { display: flex; max-width: 620px; flex-direction: column; gap: 1rem; overflow: hidden; margin: 2rem auto; padding: 1rem; border: 1px solid var(--border-soft); border-radius: 8px; }
+.skeleton-step { display: flex; min-height: 300px; flex-direction: column; justify-content: center; gap: 1.1rem; padding: 2rem; }
+.skeleton-chat-list { display: flex; flex-direction: column; gap: 0.8rem; }
+.skeleton-chat-bubble { display: block; width: 58%; height: 3.2rem; border-radius: 8px; background: linear-gradient(100deg, var(--border-soft) 25%, var(--card) 42%, var(--border-soft) 62%); background-size: 220% 100%; animation: skeleton-shimmer 1.35s ease-in-out infinite; }
+.skeleton-chat-bubble--left { align-self: flex-start; }
+.skeleton-chat-bubble--right { width: 43%; align-self: flex-end; }
+.skeleton-stack .skeleton-bar { flex: none; }
+
+@keyframes skeleton-shimmer {
+    to { background-position: -220% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .skeleton-bar, .skeleton-cover, .skeleton-avatar { animation: none; }
+}
+
+.page-kicker {
+    display: block;
+    margin-bottom: 0.35rem;
+    color: var(--rose-700);
+    font-size: 0.76rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.notifications-page-header {
+    max-width: 760px;
+    margin: 0 0 2rem;
+    padding: 0.5rem 0 1.25rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.notifications-page-header h1 { display: flex; align-items: center; gap: 0.65rem; margin-bottom: 0.35rem; }
+.notifications-page-header h1 .icon { color: #b67d17; }
+.notifications-page-header p { margin: 0; color: var(--ink-soft); }
+.notifications-page .notifications-list { max-width: 760px; }
+.notifications-page .notif-row { border-radius: 6px; }
+
+.mydates-page .mydates-header { padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+.mydates-page .mydates-header h1 { margin-bottom: 0.2rem; }
+.mydates-page .mydates-tabs { gap: 1.5rem; }
+.mydates-page .mydates-tab { margin-right: 0; }
+.mydates-page .mydate-card { border-radius: 8px; box-shadow: none; }
+.mydates-page .mydate-card:hover { box-shadow: var(--shadow-sm); }
+
+@media (max-width: 640px) {
+    .notifications-page-header { margin-bottom: 1.3rem; }
+    .skeleton-cover { height: 112px; }
 }
 
 .mydates-empty { grid-column: 1 / -1; text-align: center; padding: 2.5rem 1rem; color: var(--ink-soft); }

@@ -235,6 +235,13 @@ def invitation_public_view(request, token):
     invitation = get_object_or_404(Invitation, token=token)
     plan = invitation.date_plan
 
+    if plan.has_passed:
+        return render(request, "core/invitation_public.html", {
+            "link_unavailable": True,
+            "og_title": "Cette invitation n'existe plus",
+            "og_description": "La date prévue pour ce rendez-vous est passée.",
+        }, status=404)
+
     og_title = "Tu as reçu une invitation pour un rendez-vous"
     if plan.mood:
         og_title = f"Un rendez-vous {plan.mood.name} t'attend !"
@@ -274,12 +281,15 @@ def invitation_qr_view(request, token):
     QR (section « partage » — lien ET QR code doivent mener au même mur
     d'inscription obligatoire).
     """
-    import io
-
-    import qrcode
     from apps.invitations.models import Invitation
 
     invitation = get_object_or_404(Invitation, token=token, date_plan__creator=request.user)
+    if invitation.date_plan.has_passed:
+        return HttpResponse("Cette invitation n'existe plus.", status=404)
+    import io
+
+    import qrcode
+
     url = request.build_absolute_uri(
         reverse("core:invitation_public", kwargs={"token": invitation.token})
     )
@@ -298,15 +308,17 @@ def invitation_card_view(request, token):
     du lieu, ville, date, ambiance) — plutôt qu'un QR code nu, difficile à
     identifier une fois enregistré ou imprimé séparément.
     """
+    from apps.invitations.models import Invitation
+
+    invitation = get_object_or_404(Invitation, token=token, date_plan__creator=request.user)
+    plan = invitation.date_plan
+    if plan.has_passed:
+        return HttpResponse("Cette invitation n'existe plus.", status=404)
     import io
 
     import qrcode
     from PIL import Image, ImageDraw, ImageFont, ImageOps
 
-    from apps.invitations.models import Invitation
-
-    invitation = get_object_or_404(Invitation, token=token, date_plan__creator=request.user)
-    plan = invitation.date_plan
     url = request.build_absolute_uri(
         reverse("core:invitation_public", kwargs={"token": invitation.token})
     )

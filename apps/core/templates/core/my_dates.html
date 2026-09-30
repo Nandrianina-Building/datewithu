@@ -2,10 +2,12 @@
 {% load static icons %}
 
 {% block title %}Tous mes rendez-vous — Date With U{% endblock %}
+{% block body_class %}mydates-page{% endblock %}
 
 {% block content %}
 <div class="mydates-header">
     <div>
+        <span class="page-kicker">Ton agenda Date With U</span>
         <h1>{% icon "heart" %} Tous mes rendez-vous</h1>
         <p>Tout ce que tu as proposé, et toutes les invitations que tu as reçues — au même endroit.</p>
     </div>
@@ -22,10 +24,18 @@
 </div>
 
 <div id="panel-proposed" class="mydates-panel">
-    <div class="mydates-grid" id="proposed-grid"><p><em>Chargement...</em></p></div>
+    <div class="mydates-grid" id="proposed-grid" aria-label="Mes propositions">
+        <div class="skeleton-date-card" aria-hidden="true"><span class="skeleton-cover"></span><span class="skeleton-bar skeleton-bar--long"></span><span class="skeleton-bar skeleton-bar--short"></span></div>
+        <div class="skeleton-date-card" aria-hidden="true"><span class="skeleton-cover"></span><span class="skeleton-bar skeleton-bar--medium"></span><span class="skeleton-bar skeleton-bar--short"></span></div>
+        <div class="skeleton-date-card" aria-hidden="true"><span class="skeleton-cover"></span><span class="skeleton-bar skeleton-bar--long"></span><span class="skeleton-bar skeleton-bar--medium"></span></div>
+    </div>
 </div>
 <div id="panel-received" class="mydates-panel" style="display:none;">
-    <div class="mydates-grid" id="received-grid"><p><em>Chargement...</em></p></div>
+    <div class="mydates-grid" id="received-grid" aria-label="Invitations reçues">
+        <div class="skeleton-date-card" aria-hidden="true"><span class="skeleton-cover"></span><span class="skeleton-bar skeleton-bar--long"></span><span class="skeleton-bar skeleton-bar--short"></span></div>
+        <div class="skeleton-date-card" aria-hidden="true"><span class="skeleton-cover"></span><span class="skeleton-bar skeleton-bar--medium"></span><span class="skeleton-bar skeleton-bar--short"></span></div>
+        <div class="skeleton-date-card" aria-hidden="true"><span class="skeleton-cover"></span><span class="skeleton-bar skeleton-bar--long"></span><span class="skeleton-bar skeleton-bar--medium"></span></div>
+    </div>
 </div>
 {% endblock %}
 

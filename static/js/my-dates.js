@@ -33,7 +33,7 @@
         const overlay = document.createElement("div");
         overlay.className = "modal-overlay";
         overlay.id = "dwu-share-overlay";
-        overlay.innerHTML = `<div class="modal-panel" style="max-width:520px;"><p style="padding:2rem;text-align:center;"><em>Chargement...</em></p></div>`;
+        overlay.innerHTML = `<div class="modal-panel" style="max-width:520px;"><div class="skeleton-stack" aria-hidden="true" style="padding:2rem;"><span class="skeleton-bar skeleton-bar--long"></span><span class="skeleton-bar skeleton-bar--medium"></span><span class="skeleton-bar skeleton-bar--short"></span></div></div>`;
         overlay.addEventListener("click", (e) => { if (e.target === overlay) closeShareModal(); });
         document.body.appendChild(overlay);
 

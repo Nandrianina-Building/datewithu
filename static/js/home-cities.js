@@ -38,7 +38,8 @@
         const nextPage = parseInt(btn.dataset.page, 10) + 1;
         btn.disabled = true;
         const originalText = btn.textContent;
-        btn.textContent = "Chargement...";
+        btn.setAttribute("aria-busy", "true");
+        btn.innerHTML = '<span class="skeleton-bar skeleton-bar--medium" aria-label="Chargement"></span>';
         try {
             const res = await fetch(`/api/cities/?page=${nextPage}`);
             const data = await res.json();
@@ -49,10 +50,12 @@
                 btn.remove();
             } else {
                 btn.disabled = false;
+                btn.removeAttribute("aria-busy");
                 btn.textContent = originalText;
             }
         } catch (e) {
             btn.disabled = false;
+            btn.removeAttribute("aria-busy");
             btn.textContent = originalText;
         }
     });

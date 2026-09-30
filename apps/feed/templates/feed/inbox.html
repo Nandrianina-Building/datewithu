@@ -12,7 +12,11 @@
     <a href="{% url 'messages:received_requests' %}" class="btn">{% icon "clock" %} Demandes reçues</a>
 </div>
 
-<div id="inbox-list" class="inbox-list"><p><em>Chargement...</em></p></div>
+<div id="inbox-list" class="inbox-list skeleton-stack" aria-label="Chargement des conversations">
+    <span class="skeleton-bar skeleton-bar--long" aria-hidden="true"></span>
+    <span class="skeleton-bar skeleton-bar--medium" aria-hidden="true"></span>
+    <span class="skeleton-bar skeleton-bar--long" aria-hidden="true"></span>
+</div>
 {% endblock %}
 
 {% block extra_js %}

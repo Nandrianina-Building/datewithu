@@ -145,7 +145,7 @@
             const myToken = ++requestToken;
             if (reset) {
                 page = 1;
-                grid.innerHTML = "<p class=\"db-search-loading\"><em>Recherche...</em></p>";
+                grid.innerHTML = `<div class="skeleton-date-card" aria-hidden="true"><span class="skeleton-cover"></span><span class="skeleton-bar skeleton-bar--long"></span><span class="skeleton-bar skeleton-bar--short"></span></div><div class="skeleton-date-card" aria-hidden="true"><span class="skeleton-cover"></span><span class="skeleton-bar skeleton-bar--medium"></span><span class="skeleton-bar skeleton-bar--short"></span></div>`;
             }
             try {
                 const res = await fetch(buildUrl(query, page), { credentials: "same-origin" });

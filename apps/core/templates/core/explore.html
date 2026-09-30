@@ -15,7 +15,9 @@
 </div>
 {% csrf_token %}
 <div id="explore-app" class="places-grid" data-authenticated="{{ user.is_authenticated|yesno:'true,false' }}" data-csrf-token="{{ csrf_token }}">
-    <p><em>Chargement...</em></p>
+    <div class="skeleton-date-card" aria-hidden="true"><span class="skeleton-cover"></span><span class="skeleton-bar skeleton-bar--long"></span><span class="skeleton-bar skeleton-bar--short"></span></div>
+    <div class="skeleton-date-card" aria-hidden="true"><span class="skeleton-cover"></span><span class="skeleton-bar skeleton-bar--medium"></span><span class="skeleton-bar skeleton-bar--short"></span></div>
+    <div class="skeleton-date-card" aria-hidden="true"><span class="skeleton-cover"></span><span class="skeleton-bar skeleton-bar--long"></span><span class="skeleton-bar skeleton-bar--medium"></span></div>
 </div>
 <div id="explore-pagination" class="explore-pagination"></div>
 {% endblock %}

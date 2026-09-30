@@ -93,7 +93,7 @@
         if (category) params.set("category", category);
         params.set("page", String(currentPage));
 
-        app.innerHTML = "<p><em>Chargement...</em></p>";
+        app.innerHTML = `<div class="skeleton-date-card" aria-hidden="true"><span class="skeleton-cover"></span><span class="skeleton-bar skeleton-bar--long"></span><span class="skeleton-bar skeleton-bar--short"></span></div><div class="skeleton-date-card" aria-hidden="true"><span class="skeleton-cover"></span><span class="skeleton-bar skeleton-bar--medium"></span><span class="skeleton-bar skeleton-bar--short"></span></div><div class="skeleton-date-card" aria-hidden="true"><span class="skeleton-cover"></span><span class="skeleton-bar skeleton-bar--long"></span><span class="skeleton-bar skeleton-bar--medium"></span></div>`;
         pagination.innerHTML = "";
         const favoriteRequest = isAuthenticated
             ? fetch("/api/favorites/")

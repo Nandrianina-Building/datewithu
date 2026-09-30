@@ -47,6 +47,11 @@ class InvitationCreateView(APIView):
                 {"detail": "Termine d'abord la construction du rendez-vous."},
                 status=status.HTTP_400_BAD_REQUEST,
             )
+        if plan.has_passed:
+            return Response(
+                {"detail": "Ce rendez-vous est déjà passé. Cette invitation n'existe plus."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
         invitation = getattr(plan, "invitation", None)
         created = False
@@ -77,6 +82,8 @@ class InvitationDetailView(APIView):
 
     def get(self, request, token):
         invitation = get_object_or_404(Invitation, token=token, date_plan__creator=request.user)
+        if invitation.date_plan.has_passed:
+            return Response({"detail": "Cette invitation n'existe plus."}, status=status.HTTP_404_NOT_FOUND)
         return Response(InvitationSerializer(invitation, context={"request": request}).data)
 
 
@@ -109,6 +116,8 @@ class InvitationPublicView(APIView):
 
     def get(self, request, token):
         invitation = get_object_or_404(Invitation, token=token)
+        if invitation.date_plan.has_passed:
+            return Response({"detail": "Cette invitation n'existe plus."}, status=status.HTTP_404_NOT_FOUND)
         is_owner = request.user.is_authenticated and request.user.id == invitation.date_plan.creator_id
         if invitation.is_expired and invitation.status not in (
             Invitation.STATUS_ACCEPTED, Invitation.STATUS_MAYBE, Invitation.STATUS_DECLINED,
@@ -136,6 +145,9 @@ class InvitationRespondView(APIView):
 
     def post(self, request, token):
         invitation = get_object_or_404(Invitation, token=token)
+
+        if invitation.date_plan.has_passed:
+            return Response({"detail": "Cette invitation n'existe plus."}, status=status.HTTP_404_NOT_FOUND)
 
         if request.user.is_authenticated and request.user.id == invitation.date_plan.creator_id:
             # Bug corrigé : rien n'empêchait auparavant la personne à
@@ -213,7 +225,7 @@ class MyDatesListView(APIView):
                 "activity_image": _absolute_media_url(request, plan.activity.image) if plan.activity else None,
                 "mood": plan.mood.name if plan.mood else None,
                 "invitation_status": invitation.status if invitation else None,
-                "invitation_token": invitation.token if invitation else None,
+                "invitation_token": invitation.token if invitation and not plan.has_passed else None,
             })
         return Response(data)
 
@@ -242,7 +254,7 @@ class ReceivedInvitationsListView(APIView):
             creator = plan.creator
             data.append({
                 "plan_id": plan.id,
-                "invitation_token": invitation.token,
+                "invitation_token": invitation.token if not plan.has_passed else None,
                 "invitation_status": invitation.status,
                 "creator_id": creator.id,
                 "creator_name": creator.get_full_name() or creator.username,
@@ -271,6 +283,6 @@ class MyDateDetailView(APIView):
         from .serializers import DatePlanStateSerializer
         payload = DatePlanStateSerializer(plan).data
         invitation = getattr(plan, "invitation", None)
-        if invitation is not None:
+        if invitation is not None and not plan.has_passed:
             payload["invitation"] = InvitationSerializer(invitation, context={"request": request}).data
         return Response(payload)

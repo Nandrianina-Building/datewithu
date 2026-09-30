@@ -22,7 +22,9 @@
     <div>
         <section class="admin-tab active" id="tab-overview">
             <div class="dashboard-grid" id="admin-stats-grid">
-                <p><em>Chargement...</em></p>
+                <div class="skeleton-admin" aria-hidden="true"><span class="skeleton-bar skeleton-bar--long"></span><span class="skeleton-bar skeleton-bar--short"></span></div>
+                <div class="skeleton-admin" aria-hidden="true"><span class="skeleton-bar skeleton-bar--medium"></span><span class="skeleton-bar skeleton-bar--short"></span></div>
+                <div class="skeleton-admin" aria-hidden="true"><span class="skeleton-bar skeleton-bar--long"></span><span class="skeleton-bar skeleton-bar--medium"></span></div>
             </div>
         </section>
 
@@ -42,13 +44,13 @@
                     <option value="pending">En attente</option>
                 </select>
             </div>
-            <div id="admin-dates-overview"><p><em>Chargement...</em></p></div>
+            <div id="admin-dates-overview" class="skeleton-stack" aria-hidden="true"><span class="skeleton-bar skeleton-bar--long"></span><span class="skeleton-bar skeleton-bar--medium"></span></div>
         </section>
 
         <section class="admin-tab" id="tab-places">
             <h2>Modération des lieux</h2>
             <p class="placeholder" style="margin-top:0;">Lieux inactifs en premier — active/désactive en un clic sans passer par le Django Admin.</p>
-            <div id="admin-places-moderation"><p><em>Chargement...</em></p></div>
+            <div id="admin-places-moderation" class="skeleton-stack" aria-hidden="true"><span class="skeleton-bar skeleton-bar--long"></span><span class="skeleton-bar skeleton-bar--medium"></span></div>
         </section>
 
         <section class="admin-tab" id="tab-users">
@@ -61,7 +63,7 @@
                     <option value="0">Non vérifiés uniquement</option>
                 </select>
             </div>
-            <div id="admin-users-list"><p><em>Chargement...</em></p></div>
+            <div id="admin-users-list" class="skeleton-stack" aria-hidden="true"><span class="skeleton-bar skeleton-bar--long"></span><span class="skeleton-bar skeleton-bar--medium"></span></div>
         </section>
 
         <section class="admin-tab" id="tab-settings">

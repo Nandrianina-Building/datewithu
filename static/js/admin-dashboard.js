@@ -63,7 +63,7 @@
         if (when) params.set("when", when);
         if (status) params.set("status", status);
 
-        el.innerHTML = "<p><em>Chargement...</em></p>";
+        el.innerHTML = `<div class="skeleton-stack" aria-hidden="true"><span class="skeleton-bar skeleton-bar--long"></span><span class="skeleton-bar skeleton-bar--medium"></span><span class="skeleton-bar skeleton-bar--short"></span></div>`;
         try {
             const res = await fetch(`/api/admin/dates/?${params.toString()}`);
             const dates = await res.json();

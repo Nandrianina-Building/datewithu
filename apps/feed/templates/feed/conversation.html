@@ -9,7 +9,11 @@
 
 <div id="feed-chat-app" data-conversation-id="{{ conversation_id }}">
     {% csrf_token %}
-    <div id="chat-messages" class="chat-messages"><p><em>Chargement...</em></p></div>
+    <div id="chat-messages" class="chat-messages skeleton-chat-list" aria-label="Chargement des messages">
+        <span class="skeleton-chat-bubble skeleton-chat-bubble--left" aria-hidden="true"></span>
+        <span class="skeleton-chat-bubble skeleton-chat-bubble--right" aria-hidden="true"></span>
+        <span class="skeleton-chat-bubble skeleton-chat-bubble--left" aria-hidden="true"></span>
+    </div>
     <form id="chat-form" class="chat-form">
         <input type="text" id="chat-input" placeholder="Écris un message..." autocomplete="off" required>
         <button type="submit" class="btn btn-primary">Envoyer</button>

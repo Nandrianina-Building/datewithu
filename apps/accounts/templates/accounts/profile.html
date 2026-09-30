@@ -49,7 +49,7 @@
     <h2 style="margin-bottom:0.8rem;">{% icon "lock" %} Sécurité du compte</h2>
     <p><a href="{% url 'accounts:password_change' %}">Changer mon mot de passe →</a></p>
     <p style="margin-top:0.8rem;font-weight:600;">Comptes bloqués</p>
-    <ul id="blocked-users-list"><li><em>Chargement...</em></li></ul>
+    <ul id="blocked-users-list"><li class="skeleton-list-item" aria-hidden="true"><span class="skeleton-bar skeleton-bar--medium"></span></li><li class="skeleton-list-item" aria-hidden="true"><span class="skeleton-bar skeleton-bar--long"></span></li></ul>
 </div>
 
 <div class="card ig-section ig-danger-zone" style="max-width:640px;">

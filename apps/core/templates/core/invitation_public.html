@@ -10,7 +10,14 @@
 {% block og_image %}{% if og_image %}{{ og_image }}{% else %}{{ block.super }}{% endif %}{% endblock %}
 
 {% block content %}
-{% if requires_account %}
+{% if link_unavailable %}
+    <section class="card" style="max-width:520px;margin:3rem auto;text-align:center;">
+        <div class="verify-icon">{% icon "clock" "icon-xl" %}</div>
+        <h1>Cette invitation n'existe plus</h1>
+        <p>La date prévue pour ce rendez-vous est passée. Demande une nouvelle invitation à la personne qui l'a créée.</p>
+        <a class="btn btn-primary" href="{% url 'core:home' %}">Retour à l'accueil</a>
+    </section>
+{% elif requires_account %}
     <div style="max-width:460px;margin:2.5rem auto;text-align:center;" class="card">
         <div class="verify-icon">{% icon "heart" "icon-xl" %}</div>
         <h1>{{ og_title }}</h1>
@@ -24,7 +31,11 @@
 {% else %}
     <div id="invitation-app" data-token="{{ token }}" data-csrf-token="{{ csrf_token }}">
         {% csrf_token %}
-        <p>Chargement de l'invitation...</p>
+        <div class="skeleton-invitation" aria-label="Chargement de l'invitation">
+            <span class="skeleton-cover" aria-hidden="true"></span>
+            <span class="skeleton-bar skeleton-bar--long" aria-hidden="true"></span>
+            <span class="skeleton-bar skeleton-bar--medium" aria-hidden="true"></span>
+        </div>
     </div>
 {% endif %}
 {% endblock %}
