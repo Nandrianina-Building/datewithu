@@ -4,10 +4,10 @@
 {% block title %}Créer un rendez-vous — Date With U{% endblock %}
 
 {% block content %}
-<div class="page-hero" style="--hero-image:url('https://picsum.photos/seed/dwu-builder/1600/500');">
+<header class="compact-page-heading">
     <h1>Construisez votre rendez-vous</h1>
     <p>Sept étapes rapides, avec de vraies options — pas de longs formulaires.</p>
-</div>
+</header>
 
 <div class="db-step-shell">
     <div id="date-builder" data-start-url="{% url 'core:home' %}" data-today="{{ date_builder_today }}">

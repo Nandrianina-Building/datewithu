@@ -36,6 +36,7 @@
                 .map((m) => `${m.name} (${m.plan_count})`).join(", ") || "—";
 
             grid.innerHTML = [
+                statCard("Visites du site", Number(s.page_views || 0).toLocaleString("fr-FR"), "chargements de pages"),
                 statCard("Utilisateurs", s.users.total, `+${s.users.new_last_7_days} sur 7j · +${s.users.new_last_30_days} sur 30j`),
                 statCard("Rendez-vous", s.date_plans.total, `${s.date_plans.draft} brouillons · ${s.date_plans.completed} complétés`),
                 statCard("Invitations", s.invitations.total, invitationsBreakdown),

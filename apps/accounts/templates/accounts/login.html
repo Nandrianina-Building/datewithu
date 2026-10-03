@@ -31,7 +31,12 @@
                 </p>
                 <p>
                     <label for="{{ form.password.id_for_label }}">Mot de passe</label>
-                    {{ form.password }}
+                    <span class="password-input-wrap">
+                        {{ form.password }}
+                        <button type="button" class="password-visibility-toggle" aria-label="Afficher le mot de passe" aria-pressed="false" data-password-visibility-toggle>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                        </button>
+                    </span>
                 </p>
                 <p style="text-align:right;margin-top:-0.6rem;">
                     <a href="{% url 'accounts:password_reset_request' %}" style="font-size:0.85rem;">Mot de passe oublié ?</a>
@@ -54,4 +59,9 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+{% load static %}
+<script src="{% static 'js/password-visibility.js' %}?v=2"></script>
 {% endblock %}

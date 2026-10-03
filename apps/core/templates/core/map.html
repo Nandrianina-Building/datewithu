@@ -8,23 +8,34 @@
 {% endblock %}
 
 {% block content %}
-<div class="page-hero" style="--hero-image:url('https://picsum.photos/seed/dwu-map/1600/500');">
-    <h1>Carte des lieux</h1>
-    <p>Chaque lieu est positionné par latitude/longitude — clique sur un marqueur pour voir tous les détails.</p>
-</div>
+<div class="map-page">
+    <header class="compact-page-heading">
+        <h1>Carte des lieux</h1>
+        <p>Chaque lieu est positionné par latitude/longitude — clique sur un marqueur pour voir tous les détails.</p>
+    </header>
 
-<div class="map-toolbar">
-    <select id="map-filter-city"><option value="">Toutes les villes</option></select>
-    <select id="map-filter-category"><option value="">Toutes les catégories</option></select>
-    <button type="button" id="map-locate-btn">{% icon "compass" %} Me localiser</button>
-</div>
+    <div class="map-toolbar map-page-toolbar">
+        <button type="button" class="btn map-filters-toggle" id="map-toggle-filters" aria-controls="map-filter-panel" aria-expanded="false">Filtres de la carte</button>
+        <div class="map-filter-panel" id="map-filter-panel">
+            <label class="map-filter-field" for="map-filter-city">
+                <span>Ville</span>
+                <select id="map-filter-city"><option value="">Toutes les villes</option></select>
+            </label>
+            <label class="map-filter-field" for="map-filter-category">
+                <span>Catégorie</span>
+                <select id="map-filter-category"><option value="">Toutes les catégories</option></select>
+            </label>
+        </div>
+        <button type="button" class="btn" id="map-locate-btn">{% icon "compass" %} Me localiser</button>
+    </div>
 
-<div class="map-loading-frame">
-    <div id="places-map" class="places-map">
-        <div id="places-map-skeleton" class="skeleton-map" aria-label="Chargement de la carte">
-            <span class="skeleton-bar skeleton-bar--medium" aria-hidden="true"></span>
-            <span class="skeleton-bar skeleton-bar--long" aria-hidden="true"></span>
-            <span class="skeleton-bar skeleton-bar--short" aria-hidden="true"></span>
+    <div class="map-loading-frame">
+        <div id="places-map" class="places-map">
+            <div id="places-map-skeleton" class="skeleton-map" aria-label="Chargement de la carte">
+                <span class="skeleton-bar skeleton-bar--medium" aria-hidden="true"></span>
+                <span class="skeleton-bar skeleton-bar--long" aria-hidden="true"></span>
+                <span class="skeleton-bar skeleton-bar--short" aria-hidden="true"></span>
+            </div>
         </div>
     </div>
 </div>
@@ -33,5 +44,5 @@
 {% block extra_js %}
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="{% static 'js/place-detail.js' %}?v=2"></script>
-<script src="{% static 'js/map.js' %}?v=2"></script>
+<script src="{% static 'js/map.js' %}?v=3"></script>
 {% endblock %}

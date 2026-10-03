@@ -4,25 +4,42 @@
 {% block title %}Explorer — Date With U{% endblock %}
 
 {% block content %}
-<div class="page-hero" style="--hero-image:url('https://picsum.photos/seed/dwu-explore/1600/500');">
-    <h1>Explorer les lieux</h1>
-    <p>Restaurants, activités, ambiances — trouve l'endroit parfait pour ton prochain rendez-vous.</p>
+<div class="explore-page">
+    <header class="explore-page-heading">
+        <p class="page-eyebrow">À découvrir</p>
+        <h1>Explorer les lieux</h1>
+        <p>Restaurants, activités et ambiances pour ton prochain rendez-vous.</p>
+    </header>
+    <div class="map-toolbar" role="search">
+        <div class="explore-search-row">
+            <input type="search" id="explore-search" value="{{ request.GET.search|default:''|escape }}" placeholder="Rechercher un lieu..." aria-label="Rechercher un lieu">
+            <button type="button" class="btn explore-filters-toggle" id="explore-toggle-filters" aria-controls="explore-filter-panel" aria-expanded="false">
+                Filtres <span id="explore-filter-count" class="explore-filter-count" aria-live="polite" hidden></span>
+            </button>
+        </div>
+        <div class="explore-filter-panel" id="explore-filter-panel">
+            <label class="explore-filter-field" for="explore-filter-city">
+                <span>Ville</span>
+                <select id="explore-filter-city"><option value="">Toutes les villes</option></select>
+            </label>
+            <label class="explore-filter-field" for="explore-filter-category">
+                <span>Catégorie</span>
+                <select id="explore-filter-category"><option value="">Toutes les catégories</option></select>
+            </label>
+            <button type="button" class="btn explore-filters-reset" id="explore-reset-filters" hidden>Effacer les filtres</button>
+        </div>
+    </div>
+    {% csrf_token %}
+    <div id="explore-app" class="places-grid" data-authenticated="{{ user.is_authenticated|yesno:'true,false' }}" data-csrf-token="{{ csrf_token }}">
+        <div class="skeleton-date-card" aria-hidden="true"><span class="skeleton-cover"></span><span class="skeleton-bar skeleton-bar--long"></span><span class="skeleton-bar skeleton-bar--short"></span></div>
+        <div class="skeleton-date-card" aria-hidden="true"><span class="skeleton-cover"></span><span class="skeleton-bar skeleton-bar--medium"></span><span class="skeleton-bar skeleton-bar--short"></span></div>
+        <div class="skeleton-date-card" aria-hidden="true"><span class="skeleton-cover"></span><span class="skeleton-bar skeleton-bar--long"></span><span class="skeleton-bar skeleton-bar--medium"></span></div>
+    </div>
+    <div id="explore-pagination" class="explore-pagination"></div>
 </div>
-<div class="map-toolbar">
-    <input type="search" id="explore-search" value="{{ request.GET.search|default:''|escape }}" placeholder="Rechercher un lieu...">
-    <select id="explore-filter-city"><option value="">Toutes les villes</option></select>
-    <select id="explore-filter-category"><option value="">Toutes les catégories</option></select>
-</div>
-{% csrf_token %}
-<div id="explore-app" class="places-grid" data-authenticated="{{ user.is_authenticated|yesno:'true,false' }}" data-csrf-token="{{ csrf_token }}">
-    <div class="skeleton-date-card" aria-hidden="true"><span class="skeleton-cover"></span><span class="skeleton-bar skeleton-bar--long"></span><span class="skeleton-bar skeleton-bar--short"></span></div>
-    <div class="skeleton-date-card" aria-hidden="true"><span class="skeleton-cover"></span><span class="skeleton-bar skeleton-bar--medium"></span><span class="skeleton-bar skeleton-bar--short"></span></div>
-    <div class="skeleton-date-card" aria-hidden="true"><span class="skeleton-cover"></span><span class="skeleton-bar skeleton-bar--long"></span><span class="skeleton-bar skeleton-bar--medium"></span></div>
-</div>
-<div id="explore-pagination" class="explore-pagination"></div>
 {% endblock %}
 
 {% block extra_js %}
 <script src="{% static 'js/place-detail.js' %}?v=2"></script>
-<script src="{% static 'js/explore.js' %}?v=5"></script>
+<script src="{% static 'js/explore.js' %}?v=6"></script>
 {% endblock %}

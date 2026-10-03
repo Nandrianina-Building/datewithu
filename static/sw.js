@@ -1,7 +1,7 @@
-const CACHE_NAME = "datewithu-v1";
+const CACHE_NAME = "datewithu-v2";
 const APP_SHELL = [
     "/static/css/main.css",
-    "/static/icons/icon.svg",
+    "/static/icons/icon.svg?v=2",
 ];
 
 self.addEventListener("install", (event) => {

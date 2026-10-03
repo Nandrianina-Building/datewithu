@@ -8,6 +8,19 @@
     let currentPage = 1;
 
     const searchInput = document.getElementById("explore-search");
+    const citySelect = document.getElementById("explore-filter-city");
+    const categorySelect = document.getElementById("explore-filter-category");
+    const filtersPanel = document.getElementById("explore-filter-panel");
+    const filtersToggle = document.getElementById("explore-toggle-filters");
+    const filterCount = document.getElementById("explore-filter-count");
+    const resetFiltersButton = document.getElementById("explore-reset-filters");
+
+    function updateFilterState() {
+        const activeFilters = Number(Boolean(citySelect.value)) + Number(Boolean(categorySelect.value));
+        filterCount.textContent = activeFilters ? String(activeFilters) : "";
+        filterCount.hidden = activeFilters === 0;
+        resetFiltersButton.hidden = activeFilters === 0;
+    }
 
     function truncate(str, maxLength) {
         return window.DWU.truncate ? window.DWU.truncate(str, maxLength) : (str || "");
@@ -69,8 +82,6 @@
             ]);
             const cities = await citiesRes.json();
             const categories = await categoriesRes.json();
-            const citySelect = document.getElementById("explore-filter-city");
-            const categorySelect = document.getElementById("explore-filter-category");
             (cities.results || cities).forEach((c) => {
                 citySelect.insertAdjacentHTML("beforeend", `<option value="${c.id}">${escapeHtml(c.name)}</option>`);
             });
@@ -86,8 +97,8 @@
         currentPage = page || 1;
         const params = new URLSearchParams();
         const search = searchInput.value.trim();
-        const city = document.getElementById("explore-filter-city").value;
-        const category = document.getElementById("explore-filter-category").value;
+        const city = citySelect.value;
+        const category = categorySelect.value;
         if (search) params.set("search", search);
         if (city) params.set("city", city);
         if (category) params.set("category", category);
@@ -165,9 +176,27 @@
         clearTimeout(searchTimer);
         searchTimer = setTimeout(() => load(1), 350);
     });
-    document.getElementById("explore-filter-city").addEventListener("change", () => load(1));
-    document.getElementById("explore-filter-category").addEventListener("change", () => load(1));
+    filtersToggle.addEventListener("click", () => {
+        const isOpen = filtersToggle.getAttribute("aria-expanded") === "true";
+        filtersToggle.setAttribute("aria-expanded", String(!isOpen));
+        filtersPanel.classList.toggle("is-open", !isOpen);
+    });
+    citySelect.addEventListener("change", () => {
+        updateFilterState();
+        load(1);
+    });
+    categorySelect.addEventListener("change", () => {
+        updateFilterState();
+        load(1);
+    });
+    resetFiltersButton.addEventListener("click", () => {
+        citySelect.value = "";
+        categorySelect.value = "";
+        updateFilterState();
+        load(1);
+    });
 
+    updateFilterState();
     loadFilters();
     load(1);
 })();

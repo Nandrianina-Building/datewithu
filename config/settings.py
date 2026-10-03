@@ -112,6 +112,7 @@ MIDDLEWARE = [
     "apps.accounts.middleware.RequireVerifiedEmailMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "apps.core.security.SecurityHeadersMiddleware",
+    "apps.core.middleware.PageViewCountMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"

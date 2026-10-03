@@ -10,6 +10,7 @@ from rest_framework.views import APIView
 
 from apps.activities.models import Activity
 from apps.catalog.models import Place
+from apps.core.models import SiteConfiguration
 from apps.invitations.models import Invitation
 from apps.locations.models import City
 from apps.moods.models import Mood
@@ -90,6 +91,9 @@ class AdminStatsView(APIView):
         )
 
         return Response({
+            "page_views": SiteConfiguration.objects.filter(pk=1).values_list(
+                "page_views", flat=True,
+            ).first() or 0,
             "users": users_stats,
             "date_plans": plans_stats,
             "invitations": invitations_stats,

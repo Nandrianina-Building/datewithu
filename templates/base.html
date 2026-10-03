@@ -18,7 +18,7 @@
     <meta property="og:url" content="{{ request.build_absolute_uri }}">
     <meta property="og:title" content="{% block og_title %}Date With U — Le rendez-vous parfait à Madagascar{% endblock %}">
     <meta property="og:description" content="{% block og_description %}Construisez et partagez le rendez-vous idéal : lieux, ambiances et budgets sélectionnés partout à Madagascar.{% endblock %}">
-    <meta property="og:image" content="{% block og_image %}{{ request.scheme }}://{{ request.get_host }}{% static 'icons/icon-512.png' %}{% endblock %}">
+    <meta property="og:image" content="{% block og_image %}{{ request.scheme }}://{{ request.get_host }}{% static 'icons/icon-512.png' %}?v=2{% endblock %}">
     {# Twitter retombe automatiquement sur og:title/og:description/og:image #}
     {# quand les balises twitter:* équivalentes sont absentes — pas besoin  #}
     {# de dupliquer les blocs (interdit : un {% block %} ne peut apparaître #}
@@ -39,14 +39,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="{% static 'css/main.css' %}?v=4">
-    <link rel="manifest" href="{% static 'manifest.json' %}">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}?v=6">
+    <link rel="manifest" href="{% static 'manifest.json' %}?v=2">
 
-    <link rel="icon" href="{% static 'icons/favicon.ico' %}" sizes="any">
-    <link rel="icon" href="{% static 'icons/icon.svg' %}" type="image/svg+xml">
-    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'icons/favicon-32.png' %}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'icons/favicon-16.png' %}">
-    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'icons/apple-touch-icon.png' %}">
+    <link rel="icon" href="{% static 'icons/favicon.ico' %}?v=2" sizes="any">
+    <link rel="icon" href="{% static 'icons/icon.svg' %}?v=2" type="image/svg+xml">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'icons/favicon-32.png' %}?v=2">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'icons/favicon-16.png' %}?v=2">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'icons/apple-touch-icon.png' %}?v=2">
     <meta name="theme-color" content="#0e0b13">
     <meta name="apple-mobile-web-app-capable" content="yes">
     {% if plausible_domain %}

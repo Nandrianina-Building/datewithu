@@ -4,20 +4,22 @@
 {% block title %}Le Fil — Date With U{% endblock %}
 
 {% block content %}
-<div class="page-hero" style="--hero-image:url('https://picsum.photos/seed/dwu-feed/1600/500');">
-    <h1>{% icon "sparkles" %} Le Fil</h1>
-    <p>Publie une idée de sortie, ou trouve quelqu'un pour une sortie déjà proposée.</p>
-</div>
+<div class="feed-page">
+    <header class="feed-page-heading">
+        <div>
+            <p class="page-eyebrow">Communauté</p>
+            <h1>{% icon "sparkles" %} Le Fil</h1>
+            <p>Des idées de sorties partagées par la communauté.</p>
+        </div>
+        <button type="button" class="btn btn-primary" id="feed-open-composer-btn">{% icon "plus" %} Publier une idée</button>
+    </header>
 
-<div class="feed-new-post-row">
-    <button type="button" class="btn btn-primary" id="feed-open-composer-btn">{% icon "plus" %} Publier une idée de sortie</button>
+    <div id="feed-list" class="feed-list">
+        <div class="skeleton-date-card" aria-hidden="true"><span class="skeleton-cover"></span><span class="skeleton-bar skeleton-bar--long"></span><span class="skeleton-bar skeleton-bar--short"></span></div>
+        <div class="skeleton-date-card" aria-hidden="true"><span class="skeleton-cover"></span><span class="skeleton-bar skeleton-bar--medium"></span><span class="skeleton-bar skeleton-bar--short"></span></div>
+    </div>
+    <div id="feed-more-row" style="text-align:center;margin-top:1rem;"></div>
 </div>
-
-<div id="feed-list" class="feed-list">
-    <div class="skeleton-date-card" aria-hidden="true"><span class="skeleton-cover"></span><span class="skeleton-bar skeleton-bar--long"></span><span class="skeleton-bar skeleton-bar--short"></span></div>
-    <div class="skeleton-date-card" aria-hidden="true"><span class="skeleton-cover"></span><span class="skeleton-bar skeleton-bar--medium"></span><span class="skeleton-bar skeleton-bar--short"></span></div>
-</div>
-<div id="feed-more-row" style="text-align:center;margin-top:1rem;"></div>
 {% endblock %}
 
 {% block extra_js %}

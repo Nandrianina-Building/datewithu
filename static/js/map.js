@@ -104,6 +104,13 @@
 
     document.getElementById("map-filter-city").addEventListener("change", loadPlaces);
     document.getElementById("map-filter-category").addEventListener("change", loadPlaces);
+    const filtersToggle = document.getElementById("map-toggle-filters");
+    const filtersPanel = document.getElementById("map-filter-panel");
+    filtersToggle.addEventListener("click", () => {
+        const isOpen = filtersToggle.getAttribute("aria-expanded") === "true";
+        filtersToggle.setAttribute("aria-expanded", String(!isOpen));
+        filtersPanel.classList.toggle("is-open", !isOpen);
+    });
 
     document.getElementById("map-locate-btn").addEventListener("click", () => {
         if (!navigator.geolocation) {

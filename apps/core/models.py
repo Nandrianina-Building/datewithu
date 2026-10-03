@@ -26,6 +26,7 @@ class SiteConfiguration(models.Model):
     registration_enabled = models.BooleanField("Inscriptions activées", default=True)
     chat_enabled = models.BooleanField("Chat activé", default=False)
     reviews_enabled = models.BooleanField("Avis activés", default=False)
+    page_views = models.PositiveBigIntegerField("Visites du site", default=0)
 
     updated_at = models.DateTimeField("Mis à jour le", auto_now=True)
 
